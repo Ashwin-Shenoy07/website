@@ -18,7 +18,7 @@ const RegistrationForm = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      await axios.post('http://localhost:5000/api/players/register', formData);
+      await axios.post('https://ccl2026backend.onrender.com/api/players/register', formData);
       setMessage('Registration Successful! Welcome to CCL 2025!');
       setFormData({
         fullName: '', email: '', phone: '', age: '', battingStyle: 'Right-handed',
