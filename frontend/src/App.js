@@ -6,8 +6,8 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        {/* <h1>Cricket Tournament Registration</h1> */}
-        <RegistrationForm />
+        <h1>Cricket Tournament Registration</h1>
+  {/*<RegistrationForm />*/}
       </header>
     </div>
   );
