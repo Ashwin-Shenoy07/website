@@ -6,13 +6,11 @@ body {
 
 .App {
   text-align: center;
-  padding: 20px;
 }
 
 .App-header {
   background-color: #004d40;
   color: white;
-  padding: 20px;
   border-radius: 10px;
   margin-bottom: 30px;
 }
