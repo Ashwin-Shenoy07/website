@@ -59,7 +59,7 @@ router.post('/register', (req, res) => {
       // 2. ONLY upload files AFTER success is confirmed
       if (req.files?.aadharFile?.[0]) {
         const safeName = name.replace(/[^a-zA-Z0-9]/g, '_');
-        const aadharName = `${safeName}_Aadhar`;
+        const aadharName = `${safeName}_Aadhar_${Date.now()}`;
         aadharUrl = await uploadToCloudinary(
           req.files.aadharFile[0].buffer,
           req.files.aadharFile[0].originalname,
@@ -69,7 +69,7 @@ router.post('/register', (req, res) => {
 
       if (req.files?.profilePhoto?.[0]) {
         const safeName = name.replace(/[^a-zA-Z0-9]/g, '_');
-        const photoName = `${safeName}_Profile`;
+        const photoName = `${safeName}_Profile_${Date.now()}`;
         photoUrl = await uploadToCloudinary(
           req.files.profilePhoto[0].buffer,
           req.files.profilePhoto[0].originalname,

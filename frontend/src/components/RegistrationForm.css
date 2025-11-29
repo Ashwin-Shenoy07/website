@@ -4,6 +4,10 @@
   box-sizing: border-box;
 }
 
+form{
+  padding: 0 25px 25px;
+}
+
 .registration-container {
   min-height: 100vh;
   background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)),
@@ -18,24 +22,26 @@
 .form-card {
   background: rgba(255, 255, 255, 0.97);
   border-radius: 20px;
-  padding: 40px 30px;
   width: 100%;
   max-width: 800px;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
-  border: 2px solid #1b5e20;
 }
 
+.form-card img{
+  width: 100%;
+  border-radius: 17px 17px 0 0;
+}
 .form-card h1 {
   text-align: center;
   font-size: 2.6rem;
-  color: #1b5e20;
+  color: #1f123d;
   margin-bottom: 10px;
   font-weight: 900;
 }
 
 .form-card p {
   text-align: center;
-  color: #2e7d32;
+  color: #1f123d;
   font-size: 1.2rem;
   margin-bottom: 25px;
 }
@@ -46,7 +52,7 @@
   width: 100%;
   padding: 14px;
   margin: 12px 0;
-  border: 2px solid #81c784;
+  border: 2px solid #1f123d;
   border-radius: 10px;
   font-size: 1rem;
   transition: all 0.3s;
@@ -54,7 +60,7 @@
 
 .form-card input:focus,
 .form-card select:focus {
-  border-color: #1b5e20;
+  border-color: #1f123d;
   outline: none;
   box-shadow: 0 0 10px rgba(27, 94, 32, 0.3);
 }
@@ -62,29 +68,29 @@
 .form-card input[type="file"] {
   padding: 10px;
   background: #f5f5f5;
-  border: 2px dashed #81c784;
+  border: 2px dashed #1f123d;
   color:#c62828
 }
 
 /* When a file is selected → TURN GREEN */
 .form-card input[type="file"]:valid {
-  border: 2px dashed #1b5e20 !important;
+  border: 2px dashed #1f123d !important;
   background: #e8f5e9 !important;
-  color: #1b5e20 !important;
+  color: #1f123d !important;
   font-weight: bold;
 }
 
 /* Optional: Show filename in green when selected */
 .form-card input[type="file"]:valid::file-selector-button {
-  background: #1b5e20;
+  background: #1f123d;
   color: white;
   font-weight: bold;
 }
 
 /* Extra polish: hover effect */
 .form-card input[type="file"]:hover {
-  background: #e8f5e9;
-  border-color: #4caf50;
+  background: #1f123d18;
+  border-color: #1f123d;
 }
 
 .radio-group {
@@ -93,13 +99,13 @@
   gap: 15px;
   margin: 15px 0;
   padding: 10px;
-  background: #f0f8f0;
+  background: #1f123d18;
   border-radius: 10px;
 }
 
 .radio-group label {
   font-weight: 600;
-  color: #1b5e20;
+  color: #1f123d;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -108,7 +114,7 @@
 
 label {
   font-weight: 600;
-  color: #1b5e20;
+  color: #1f123d;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -128,8 +134,8 @@ label {
   font-size: 1.3rem;
   font-weight: bold;
   background: #e8f5e9;
-  border: 2px solid #4caf50;
-  color: #1b5e20;
+  border: 2px solid #1f123d;
+  color: #1f123d;
 }
 
 .message:has(div[style*="red"]) {
@@ -142,7 +148,7 @@ button {
   width: 100%;
   padding: 18px;
   margin-top: 25px;
-  background: linear-gradient(45deg, #1b5e20, #4caf50);
+  background: linear-gradient(7deg, #4105cc, #1f123d);
   color: white;
   border: none;
   border-radius: 50px;
@@ -150,12 +156,12 @@ button {
   font-weight: bold;
   cursor: pointer;
   transition: all 0.4s;
-  box-shadow: 0 10px 20px rgba(27, 94, 32, 0.4);
+  box-shadow: 0 10px 20px rgba(37, 27, 94, 0.1);
 }
 
 button:hover {
   transform: translateY(-4px);
-  box-shadow: 0 15px 30px rgba(27, 94, 32, 0.5);
+  box-shadow: 0 10px 20px rgba(37, 27, 94, 0.1);
 }
 
 button:disabled {
@@ -164,9 +170,41 @@ button:disabled {
   transform: none;
 }
 
+.success-screen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.success-box {
+  text-align: center;
+  background: #e8f5e9;
+  padding: 40px;
+  border-radius: 20px;
+  border: 3px solid #1b5e20;
+}
+
+.success-box h2 {
+  color: #1b5e20;
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+}
+
+.new-reg-btn {
+  margin-top: 30px;
+  padding: 15px 30px;
+  background: #1b5e20;
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
 @media (max-width: 480px) {
-  .form-card {
-    padding: 25px 20px;
+  form{
+    padding: 0 15px 15px;
   }
   .form-card h1 {
     font-size: 2rem;

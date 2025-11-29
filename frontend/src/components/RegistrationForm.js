@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState,useRef } from 'react';
 import axios from 'axios';
 import './RegistrationForm.css';
+import banner from '../asset/banner.png';
+
 
 const RegistrationForm = () => {
   const [formData, setFormData] = useState({
@@ -11,19 +13,71 @@ const RegistrationForm = () => {
   const [files, setFiles] = useState({ aadharFile: null, profilePhoto: null });
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false); // ← NEW: Hide form on success
+
+  const aadharRef = useRef();
+  const photoRef = useRef();
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  const { name, value } = e.target;
+
+  if (name === 'mobile') {
+    // Remove all non-digits
+    let digits = value.replace(/\D/g, '');
+
+    // Allow only if first digit is 6,7,8,9 (or empty)
+    if (digits.length > 0) {
+      const firstDigit = digits[0];
+      if (!['6', '7', '8', '9'].includes(firstDigit)) {
+        // Don't update state if invalid first digit
+        return;
+      }
+    }
+
+    // Limit to 10 digits
+    digits = digits.slice(0, 10);
+
+    setFormData({ ...formData, mobile: digits });
+  }
+  else if (name === 'aadharLast4') {
+    const digits = value.replace(/\D/g, '').slice(0, 4);
+    setFormData({ ...formData, aadharLast4: digits });
+  }
+  else {
+    setFormData({ ...formData, [name]: value });
+  }
+};
 
   const handleFile = (e) => {
     setFiles({ ...files, [e.target.name]: e.target.files[0] });
+  };
+
+  const resetForm = () => {
+    setFormData({
+      name: '', mobile: '', place: '', aadharLast4: '', category: 'Batsman',
+      battingStyle: 'Right-Handed', bowlingStyle: 'None', jerseySize: 'S',
+      nameOnJersey: '', numberOnJersey: '', playedLastSeason: 'No'
+    });
+    setFiles({ aadharFile: null, profilePhoto: null });
+    setMessage('');
+    setIsSuccess(false);  // ← THIS LINE WAS MISSING!
+    setLoading(false);
+    if (aadharRef.current) aadharRef.current.value = '';
+    if (photoRef.current) photoRef.current.value = '';
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setMessage('');
+    setIsSuccess(false);
+
+    // Final mobile validation
+    if (formData.mobile.length !== 10) {
+      setMessage('Please enter a valid 10-digit mobile number');
+      setLoading(false);
+      return;
+    }
 
     const data = new FormData();
     Object.keys(formData).forEach(key => data.append(key, formData[key]));
@@ -37,23 +91,27 @@ const RegistrationForm = () => {
       );
 
       if (res.data.success) {
+        setIsSuccess(true); // ← Hide form
         setMessage(
-          <div style={{color:'green', fontSize:'1.4rem', fontWeight:'bold'}}>
-            Registration Successful! <br/>
-            Reg No: {res.data.regNumber} <br/>
-            Name: {res.data.name} <br/>
-            Place: {res.data.place}
+          <div className="success-box">
+            <h2>Registration Successful!</h2>
+            <p><strong>Reg No:</strong> {res.data.regNumber}</p>
+            <p><strong>Name:</strong> {res.data.name}</p>
+            <p><strong>Place:</strong> {res.data.place}</p>
+            <button onClick={resetForm} className="new-reg-btn">
+              Register Another Player
+            </button>
           </div>
         );
-        setFormData({ name: '', mobile: '', place: '', aadharLast4: '', category: 'Open',
-          battingStyle: 'Right Hand', bowlingStyle: 'None', jerseySize: 'M',
-          nameOnJersey: '', numberOnJersey: '', playedLastSeason: 'No' });
-        setFiles({ aadharFile: null, profilePhoto: null });
+        // setFormData({ name: '', mobile: '', place: '', aadharLast4: '', category: 'Open',
+        //   battingStyle: 'Right Hand', bowlingStyle: 'None', jerseySize: 'M',
+        //   nameOnJersey: '', numberOnJersey: '', playedLastSeason: 'No' });
+        // setFiles({ aadharFile: null, profilePhoto: null });
       }
     } catch (err) {
       setMessage(
-        <div style={{color:'red', fontWeight:'bold'}}>
-          {err.response?.data?.message || "Registration Failed! Try again."}
+        <div style={{ color: 'red', fontWeight: 'bold' }}>
+          {err.response?.data?.message || "Registration failed. Please try again."}
         </div>
       );
     } finally {
@@ -61,11 +119,20 @@ const RegistrationForm = () => {
     }
   };
 
+  if (isSuccess) {
+    return (
+      <div className="registration-container success-screen">
+        <div className="form-card">{message}</div>
+      </div>
+    );
+  }
+
   return (
     <div className="registration-container">
       <div className="form-card">
+        <img src={banner} alt='banner.png'/>
         <h1>CCL 2026 Player Registration</h1>
-        <p>Official Registration Portal</p>
+        <p>Join the Legacy • Play with Passion</p>
 
         {message && <div className="message">{message}</div>}
 
@@ -128,7 +195,7 @@ const RegistrationForm = () => {
           </div>
 
           <button type="submit" disabled={loading}>
-            {loading ? 'Registering...' : 'SUBMIT REGISTRATION'}
+            {loading ? 'Registering...' : 'REGISTER NOW'}
           </button>
         </form>
       </div>
