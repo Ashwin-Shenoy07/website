@@ -4,8 +4,8 @@ import './RegistrationForm.css';
 
 const RegistrationForm = () => {
   const [formData, setFormData] = useState({
-    name: '', mobile: '', place: '', aadharLast4: '', category: 'Open',
-    battingStyle: 'Right Hand', bowlingStyle: 'None', jerseySize: 'M',
+    name: '', mobile: '', place: '', aadharLast4: '', category: 'Batsman',
+    battingStyle: 'Right-Handed', bowlingStyle: 'None', jerseySize: 'S',
     nameOnJersey: '', numberOnJersey: '', playedLastSeason: 'No'
   });
   const [files, setFiles] = useState({ aadharFile: null, profilePhoto: null });
@@ -84,14 +84,14 @@ const RegistrationForm = () => {
 
           <div className="radio-group">
             <label>Category:</label>
-            {['Open', 'Under-19', 'Veterans'].map(c => (
+            {['Batsman', 'Bowler', 'All-Rounder', 'Wicket-Keeper'].map(c => (
               <label key={c}><input type="radio" name="category" value={c} checked={formData.category === c} onChange={handleChange} /> {c}</label>
             ))}
           </div>
 
           <div className="radio-group">
             <label>Batting:</label>
-            {['Right Hand', 'Left Hand'].map(b => (
+            {['Right-Handed', 'Left-Handed'].map(b => (
               <label key={b}><input type="radio" name="battingStyle" value={b} checked={formData.battingStyle === b} onChange={handleChange} /> {b}</label>
             ))}
           </div>
@@ -103,13 +103,19 @@ const RegistrationForm = () => {
             ))}
           </div>
 
-          <select name="jerseySize" value={formData.jerseySize} onChange={handleChange}>
+          <div className="radio-group">
+            <label>Jersey Size:</label>
+            {['S', 'M', 'L','XL', 'XXL', '3XL','4XL'].map(b => (
+              <label key={b}><input type="radio" name="jerseySize" value={b} checked={formData.jerseySize === b} onChange={handleChange} /> {b}</label>
+            ))}
+          </div>
+          {/* <select name="jerseySize" value={formData.jerseySize} onChange={handleChange}>
             <option value="S">S</option>
             <option value="M">M</option>
             <option value="L">L</option>
             <option value="XL">XL</option>
             <option value="XXL">XXL</option>
-          </select>
+          </select> */}
 
           <input name="nameOnJersey" placeholder="Name on Jersey" value={formData.nameOnJersey} onChange={handleChange} required />
           <input name="numberOnJersey" placeholder="Number on Jersey" value={formData.numberOnJersey} onChange={handleChange} required />

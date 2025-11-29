@@ -84,6 +84,15 @@
   cursor: pointer;
 }
 
+label {
+  font-weight: 600;
+  color: #1b5e20;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
 .radio-group input[type="radio"] {
   width: auto;
   transform: scale(1.3);
