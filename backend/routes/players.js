@@ -1,14 +1,32 @@
 // backend/routes/players.js
+const express = require('express');
+const router = express.Router();
 const multer = require('multer');
 const path = require('path');
+const Player = require('../models/Player');
 
 const storage = multer.diskStorage({
-  destination: './uploads/',
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/');                 // Make sure this folder exists
+  },
   filename: (req, file, cb) => {
-    cb(null, `${Date.now()}-${file.originalname}`);
+    const uniqueName = `${Date.now()}-${file.originalname}`;
+    cb(null, uniqueName);
   }
 });
-const upload = multer({ storage });
+
+const upload = multer({
+  storage,
+  limits: { fileSize: 10 * 1024 * 1024 }, // 10MB limit
+  fileFilter: (req, file, cb) => {
+    const allowed = ['image/jpeg', 'image/png', 'application/pdf'];
+    if (allowed.includes(file.mimetype)) {
+      cb(null, true);
+    } else {
+      cb(new Error('Invalid file type'));
+    }
+  }
+});
 
 // POST - Register
 router.post('/register', upload.fields([
@@ -18,7 +36,7 @@ router.post('/register', upload.fields([
   try {
     const existing = await Player.findOne({ mobile: req.body.mobile });
     if (existing) {
-      return res.status(400).json({ message: "Mobile number already registered!" });
+      return res.status(400).json({ message: "Plyer with same mobile number is already registered!" });
     }
 
     const player = new Player({
