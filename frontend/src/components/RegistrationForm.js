@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import './RegistrationForm.css'; // We'll create this CSS next
 
 const RegistrationForm = () => {
   const [formData, setFormData] = useState({
-    fullName: '', email: '', phone: '', age: '', battingStyle: 'Right-handed',
-    bowlingStyle: 'None', role: 'Batsman', teamName: '', experience: ''
+    name: '', mobile: '', place: '', aadharLast4: '', category: 'Open',
+    battingStyle: 'Right Hand', bowlingStyle: 'None', jerseySize: 'M',
+    nameOnJersey: '', numberOnJersey: '', playedLastSeason: 'No'
   });
+  const [files, setFiles] = useState({ aadharFile: null, profilePhoto: null });
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -14,19 +15,46 @@ const RegistrationForm = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const handleFile = (e) => {
+    setFiles({ ...files, [e.target.name]: e.target.files[0] });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("MONGO_URI =", process.env.MONGO_URI);
     setLoading(true);
+    setMessage('');
+
+    const data = new FormData();
+    Object.keys(formData).forEach(key => data.append(key, formData[key]));
+    if (files.aadharFile) data.append('aadharFile', files.aadharFile);
+    if (files.profilePhoto) data.append('profilePhoto', files.profilePhoto);
+
     try {
-      await axios.post('https://ccl2026backend.onrender.com/api/players/register', formData);
-      setMessage('Registration Successful! Welcome to CCL 2025!');
-      setFormData({
-        fullName: '', email: '', phone: '', age: '', battingStyle: 'Right-handed',
-        bowlingStyle: 'None', role: 'Batsman', teamName: '', experience: ''
-      });
+      const res = await axios.post(
+        'https://ccl2026backend.onrender.com/api/players/register',
+        data
+      );
+
+      if (res.data.success) {
+        setMessage(
+          <div style={{color:'green', fontSize:'1.4rem', fontWeight:'bold'}}>
+            Registration Successful! <br/>
+            Reg No: {res.data.regNumber} <br/>
+            Name: {res.data.name} <br/>
+            Place: {res.data.place}
+          </div>
+        );
+        setFormData({ name: '', mobile: '', place: '', aadharLast4: '', category: 'Open',
+          battingStyle: 'Right Hand', bowlingStyle: 'None', jerseySize: 'M',
+          nameOnJersey: '', numberOnJersey: '', playedLastSeason: 'No' });
+        setFiles({ aadharFile: null, profilePhoto: null });
+      }
     } catch (err) {
-      setMessage('Registration failed. Please try again.');
+      setMessage(
+        <div style={{color:'red', fontWeight:'bold'}}>
+          {err.response?.data?.message || "Registration Failed! Try again."}
+        </div>
+      );
     } finally {
       setLoading(false);
     }
@@ -35,88 +63,67 @@ const RegistrationForm = () => {
   return (
     <div className="registration-container">
       <div className="form-card">
-        <div className="header-section">
-          <h1>CCL 2025</h1>
-          <p>Player Registration Form</p>
-          <span>Join the Legacy • Play with Passion</span>
-        </div>
+        <h1>CCL 2026 Player Registration</h1>
+        <p>Official Registration Portal</p>
 
-        {message && (
-          <div className={`message ${message.includes('Success') ? 'success' : 'error'}`}>
-            {message}
-          </div>
-        )}
+        {message && <div className="message">{message}</div>}
 
         <form onSubmit={handleSubmit}>
-          <div className="input-group">
-            <input type="text" name="fullName" value={formData.fullName} onChange={handleChange} required />
-            <label>Full Name</label>
+          {/* All your fields here - Name, Mobile, Place, etc. */}
+          <input name="name" placeholder="Full Name" value={formData.name} onChange={handleChange} required />
+          <input name="mobile" placeholder="Mobile Number" value={formData.mobile} onChange={handleChange} required />
+          <input name="place" placeholder="Place / Area" value={formData.place} onChange={handleChange} required />
+          <input name="aadharLast4" placeholder="Aadhar Last 4 Digits" maxLength="4" value={formData.aadharLast4} onChange={handleChange} required />
+
+          <label>Aadhar Proof (PDF only)</label>
+          <input type="file" name="aadharFile" accept=".pdf" onChange={handleFile} required />
+
+          <label>Profile Photo (JPG/PNG)</label>
+          <input type="file" name="profilePhoto" accept="image/*" onChange={handleFile} required />
+
+          <div className="radio-group">
+            <label>Category:</label>
+            {['Open', 'Under-19', 'Veterans'].map(c => (
+              <label key={c}><input type="radio" name="category" value={c} checked={formData.category === c} onChange={handleChange} /> {c}</label>
+            ))}
           </div>
 
-          <div className="input-group">
-            <input type="email" name="email" value={formData.email} onChange={handleChange} required />
-            <label>Email Address</label>
+          <div className="radio-group">
+            <label>Batting:</label>
+            {['Right Hand', 'Left Hand'].map(b => (
+              <label key={b}><input type="radio" name="battingStyle" value={b} checked={formData.battingStyle === b} onChange={handleChange} /> {b}</label>
+            ))}
           </div>
 
-          <div className="input-group">
-            <input type="text" name="phone" value={formData.phone} onChange={handleChange} required />
-            <label>Phone Number</label>
+          <div className="radio-group">
+            <label>Bowling:</label>
+            {['Right Arm', 'Left Arm', 'None'].map(b => (
+              <label key={b}><input type="radio" name="bowlingStyle" value={b} checked={formData.bowlingStyle === b} onChange={handleChange} /> {b}</label>
+            ))}
           </div>
 
-          <div className="input-group">
-            <input type="number" name="age" value={formData.age} onChange={handleChange} required />
-            <label>Age</label>
+          <select name="jerseySize" value={formData.jerseySize} onChange={handleChange}>
+            <option value="S">S</option>
+            <option value="M">M</option>
+            <option value="L">L</option>
+            <option value="XL">XL</option>
+            <option value="XXL">XXL</option>
+          </select>
+
+          <input name="nameOnJersey" placeholder="Name on Jersey" value={formData.nameOnJersey} onChange={handleChange} required />
+          <input name="numberOnJersey" placeholder="Number on Jersey" value={formData.numberOnJersey} onChange={handleChange} required />
+
+          <div className="radio-group">
+            <label>Played Last Season?</label>
+            {['Yes', 'No'].map(y => (
+              <label key={y}><input type="radio" name="playedLastSeason" value={y} checked={formData.playedLastSeason === y} onChange={handleChange} /> {y}</label>
+            ))}
           </div>
 
-          <div className="row">
-            <div className="input-group">
-              <select name="battingStyle" value={formData.battingStyle} onChange={handleChange}>
-                <option>Right-handed</option>
-                <option>Left-handed</option>
-              </select>
-              <label>Batting Style</label>
-            </div>
-
-            <div className="input-group">
-              <select name="bowlingStyle" value={formData.bowlingStyle} onChange={handleChange}>
-                <option>None</option>
-                <option>Right-arm Fast</option>
-                <option>Left-arm Fast</option>
-                <option>Right-arm Spin</option>
-                <option>Left-arm Spin</option>
-              </select>
-              <label>Bowling Style</label>
-            </div>
-          </div>
-
-          <div className="input-group">
-            <select name="role" value={formData.role} onChange={handleChange} required>
-              <option>Batsman</option>
-              <option>Bowler</option>
-              <option>All-rounder</option>
-              <option>Wicket-keeper</option>
-            </select>
-            <label>Primary Role</label>
-          </div>
-
-          <div className="input-group">
-            <input type="text" name="teamName" value={formData.teamName} onChange={handleChange} />
-            <label>Team Name (Optional)</label>
-          </div>
-
-          <div className="input-group">
-            <textarea name="experience" value={formData.experience} onChange={handleChange} rows="3" />
-            <label>Cricket Experience (Optional)</label>
-          </div>
-
-          <button type="submit" className={`submit-btn ${loading ? 'loading' : ''}`} disabled={loading}>
-            {loading ? 'Registering...' : 'Register Now'}
+          <button type="submit" disabled={loading}>
+            {loading ? 'Registering...' : 'SUBMIT REGISTRATION'}
           </button>
         </form>
-
-        <div className="footer-note">
-          <p>Be a part of CCL 2025 • Limited Spots Available!</p>
-        </div>
       </div>
     </div>
   );
