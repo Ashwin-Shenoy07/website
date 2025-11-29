@@ -16,6 +16,7 @@ const RegistrationForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("MONGO_URI =", process.env.MONGO_URI);
     setLoading(true);
     try {
       await axios.post('https://ccl2026backend.onrender.com/api/players/register', formData);
