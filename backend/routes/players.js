@@ -64,3 +64,5 @@ router.post('/register', upload.fields([
     res.status(500).json({ message: "Server error. Please try again." });
   }
 });
+
+module.exports = router;
