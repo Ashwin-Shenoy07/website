@@ -1,43 +1,77 @@
 // frontend/src/App.js
 import React, { useState } from 'react';
 import RegistrationForm from './components/RegistrationForm';
-import PlayerList from './components/PlayerList';
+import PlayersList from './components/PlayerList';
 import './App.css';
+import logo from './asset/logo.png';
 
 function App() {
-  const [activeTab, setActiveTab] = useState('register');
+  const [activePage, setActivePage] = useState('register');
+  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <div className="App">
-      {/* Banner */}
-      <div className="banner-container">
-        <img src="/banner.png" alt="CCL 2026" className="banner" />
-        <div className="overlay">
+    <div className="app-with-menu">
+
+      {/* TOP MENUBAR */}
+      <header className="menubar">
+        <div className="logo">
+          <img src={logo}/>
           <h1>CCL 2026</h1>
-          <p>Official Player Registration Portal</p>
         </div>
-      </div>
 
-      {/* Tabs */}
-      <div className="tabs">
-        <button
-          className={activeTab === 'register' ? 'active' : ''}
-          onClick={() => setActiveTab('register')}
+        {/* Desktop Menu */}
+        <nav className="desktop-menu">
+          <button
+            className={activePage === 'register' ? 'active' : ''}
+            onClick={() => setActivePage('register')}
+          >
+            Register Player
+          </button>
+          <button
+            className={activePage === 'players' ? 'active' : ''}
+            onClick={() => setActivePage('players')}
+          >
+            View Players
+          </button>
+        </nav>
+        
+        {/* Mobile Hamburger */}
+        <button 
+          className="hamburger"
+          onClick={() => setMenuOpen(!menuOpen)}
         >
-          Register Player
+          {menuOpen ? '×' : '☰'}
         </button>
-        <button
-          className={activeTab === 'view' ? 'active' : ''}
-          onClick={() => setActiveTab('view')}
-        >
-          View All Players ({/* Optional: live count */})
-        </button>
-      </div>
+        
+      </header>
+      {/* BREADCRUMB */}
 
-      {/* Content */}
-      <div className="tab-content">
-        {activeTab === 'register' && <RegistrationForm />}
-        {activeTab === 'view' && <PlayerList />}
+      {/* Mobile Menu Overlay */}
+      {menuOpen && (
+        <div className="mobile-menu-overlay" onClick={() => setMenuOpen(false)}>
+          <div className="mobile-menu">
+            <button 
+              className={activePage === 'register' ? 'active' : ''}
+              onClick={() => { setActivePage('register'); setMenuOpen(false); }}
+            >
+              Register Player
+            </button>
+            <button 
+              className={activePage === 'players' ? 'active' : ''}
+              onClick={() => { setActivePage('players'); setMenuOpen(false); }}
+            >
+              View Players
+            </button>
+          </div>
+        </div>
+      )}
+
+      
+
+      {/* MAIN CONTENT */}
+      <div className="main-content">
+        {activePage === 'register' && <RegistrationForm />}
+        {activePage === 'players' && <PlayersList />}
       </div>
     </div>
   );

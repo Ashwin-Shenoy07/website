@@ -7,7 +7,7 @@ import banner from '../asset/banner.png';
 const RegistrationForm = () => {
   const [formData, setFormData] = useState({
     name: '', mobile: '', place: '', aadharLast4: '', category: 'Batsman',
-    battingStyle: 'Right-Handed', bowlingStyle: 'None', jerseySize: 'S',
+    battingStyle: 'Right-Handed', bowlingStyle: 'None', jerseySize: 'S/38',
     nameOnJersey: '', numberOnJersey: '', playedLastSeason: 'No'
   });
   const [files, setFiles] = useState({ aadharFile: null, profilePhoto: null });
@@ -55,7 +55,7 @@ const RegistrationForm = () => {
   const resetForm = () => {
     setFormData({
       name: '', mobile: '', place: '', aadharLast4: '', category: 'Batsman',
-      battingStyle: 'Right-Handed', bowlingStyle: 'None', jerseySize: 'S',
+      battingStyle: 'Right-Handed', bowlingStyle: 'None', jerseySize: 'S/38',
       nameOnJersey: '', numberOnJersey: '', playedLastSeason: 'No'
     });
     setFiles({ aadharFile: null, profilePhoto: null });
@@ -84,10 +84,12 @@ const RegistrationForm = () => {
     Object.keys(formData).forEach(key => data.append(key, formData[key]));
     if (files.aadharFile) data.append('aadharFile', files.aadharFile);
     if (files.profilePhoto) data.append('profilePhoto', files.profilePhoto);
+    
+    const backendURL = process.env.REACT_APP_BACKEND_URL;
 
     try {
       const res = await axios.post(
-        'https://website-k3qa.onrender.com/api/players/register',
+        `${backendURL}api/players/register`,
         data
       );
 
@@ -128,11 +130,13 @@ const RegistrationForm = () => {
     );
   }
 
+  const ref = useRef();
+
   return (
     <div className="registration-container">
       <div className="form-card">
         <img src={banner} alt='banner.png'/>
-        <h1>CCL 2026 Player Registration</h1>
+        <h1>Player Registration</h1>
         <p>Join the Legacy • Play with Passion</p>
 
         {message && <div className="message">{message}</div>}
@@ -142,10 +146,13 @@ const RegistrationForm = () => {
           <input name="name" placeholder="Full Name" value={formData.name} onChange={handleChange} required />
           <input name="mobile" placeholder="Mobile Number" value={formData.mobile} onChange={handleChange} required />
           <input name="place" placeholder="Place / Area" value={formData.place} onChange={handleChange} required />
+          <input name="dob" type="text" ref={ref} placeholder="Date of Birth" onChange={handleChange} onFocus={() => {if (ref.current) {
+                ref.current.type = "date"}}} onBlur={() => {if (ref.current) { ref.current.type = formData.dob ? "date" : "text"}}} value={formData.dob} />
+          <span>Note: Date of Birth will your password for future communicatoin</span>          
           <input name="aadharLast4" placeholder="Aadhar Last 4 Digits" maxLength="4" value={formData.aadharLast4} onChange={handleChange} required />
 
-          <label>Aadhar Proof (PDF only)</label>
-          <input type="file" name="aadharFile" accept=".pdf" onChange={handleFile} required />
+          <label>Aadhar Proof</label>
+          <input type="file" name="aadharFile" onChange={handleFile} required />
 
           <label>Profile Photo (JPG/PNG)</label>
           <input type="file" name="profilePhoto" accept="image/*" onChange={handleFile} required />
@@ -173,7 +180,7 @@ const RegistrationForm = () => {
 
           <div className="radio-group">
             <label>Jersey Size:</label>
-            {['S', 'M', 'L','XL', 'XXL', '3XL','4XL'].map(b => (
+            {['S/38', 'M/40', 'L/42','XL/44', 'XXL/46', '3XL/48'].map(b => (
               <label key={b}><input type="radio" name="jerseySize" value={b} checked={formData.jerseySize === b} onChange={handleChange} /> {b}</label>
             ))}
           </div>
@@ -186,7 +193,7 @@ const RegistrationForm = () => {
           </select> */}
 
           <input name="nameOnJersey" placeholder="Name on Jersey" value={formData.nameOnJersey} onChange={handleChange} required />
-          <input name="numberOnJersey" placeholder="Number on Jersey" value={formData.numberOnJersey} onChange={handleChange} required />
+          <input name="numberOnJersey" placeholder="Number on Jersey" value={formData.numberOnJersey} maxLength="3" onChange={handleChange} required />
 
           <div className="radio-group">
             <label>Played Last Season?</label>

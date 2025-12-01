@@ -10,8 +10,9 @@ form{
 
 .registration-container {
   min-height: 100vh;
-  background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)),
-              url('https://images.unsplash.com/photo-1593340536030-400b6e2d8e3c?q=80&w=2070&auto=format') center/cover no-repeat fixed;
+  background: url('../asset/bg.png');
+  background-repeat: no-repeat;
+  background-size: cover;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -203,6 +204,9 @@ button:disabled {
 }
 
 @media (max-width: 480px) {
+  .registration-container{
+    padding: 0;
+  }
   form{
     padding: 0 15px 15px;
   }
