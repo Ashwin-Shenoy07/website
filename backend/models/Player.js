@@ -19,7 +19,7 @@ const playerSchema = new mongoose.Schema({
   playedLastSeason: { type: String, enum: ['Yes', 'No'], required: true }
 }, { 
   timestamps: true,
-  collection: 'Player_Registration'
+  collection: process.env.COLLECTION_NAME
 });
 
 // Auto-increment regNumber starting from 1

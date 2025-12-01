@@ -13,7 +13,7 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-const uploadToCloudinary = (buffer, originalName, customName, folder = 'ccl2026') => {
+const uploadToCloudinary = (buffer, originalName, customName, folder = process.env.CLOUDINARY_FOLDER) => {
   return new Promise((resolve, reject) => {
     const stream = cloudinary.uploader.upload_stream(
       {

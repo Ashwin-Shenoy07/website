@@ -71,6 +71,7 @@ const RegistrationForm = () => {
     setLoading(true);
     setMessage('');
     setIsSuccess(false);
+    console.log("collection name:",process.env.COLLECTION_NAME);
 
     // Final mobile validation
     if (formData.mobile.length !== 10) {
@@ -86,7 +87,7 @@ const RegistrationForm = () => {
 
     try {
       const res = await axios.post(
-        'https://ccl2026backend.onrender.com/api/players/register',
+        'https://website-k3qa.onrender.com/api/players/register',
         data
       );
 

@@ -1,0 +1,147 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #0d3618, #1e4620);
+  min-height: 100vh;
+  color: #333;
+}
+
+/* ====================== BANNER ====================== */
+.banner-container {
+  position: relative;
+  width: 100%;
+  height: 70vh;
+  min-height: 500px;
+  overflow: hidden;
+}
+
+.banner {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.6);
+}
+
+.overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: ;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: white;
+  text-shadow: 0 4px 20px rgba(0,0,0,0.8);
+  z-index: 2;
+  width: 90%;
+  max-width: 900px;
+}
+
+.overlay h1 {
+  font-size: 5.5rem;
+  font-weight: 900;
+  letter-spacing: 8px;
+  margin-bottom: 15px;
+  background: linear-gradient(45deg, #ffd700, #ffed4e, #ff6b6b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: glow 2s ease-in-out infinite alternate;
+}
+
+.overlay p {
+  font-size: 2rem;
+  font-weight: 600;
+  letter-spacing: 3px;
+}
+
+@keyframes glow {
+  from { text-shadow: 0 0 20px #ffd700; }
+  to { text-shadow: 0 0 40px #ff6b6b, 0 0 60px #ffed4e; }
+}
+
+/* ====================== TABS ====================== */
+.tabs {
+  display: flex;
+  justify-content: center;
+  background: rgba(27, 94, 32, 0.95);
+  padding: 15px 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+}
+
+.tabs button {
+  padding: 16px 50px;
+  margin: 0 15px;
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: white;
+  background: transparent;
+  border: 3px solid transparent;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.4s ease;
+}
+
+.tabs button:hover {
+  background: rgba(255,255,255,0.1);
+  transform: translateY(-3px);
+}
+
+.tabs button.active {
+  background: linear-gradient(45deg, #ffd700, #ffed4e);
+  color: #1b5e20;
+  border-color: #ffd700;
+  box-shadow: 0 10px 30px rgba(255,215,0,0.4);
+  transform: scale(1.05);
+}
+
+/* ====================== TAB CONTENT ====================== */
+.tab-content {
+  min-height: 80vh;
+  padding: 40px 20px;
+  background: linear-gradient(to bottom, rgba(13,54,24,0.9), #0a1f0f);
+}
+
+/* ====================== MOBILE RESPONSIVE ====================== */
+@media (max-width: 768px) {
+  .overlay h1 {
+    font-size: 3.5rem;
+    letter-spacing: 4px;
+  }
+  
+  .overlay p {
+    font-size: 1.4rem;
+  }
+
+  .tabs {
+    flex-direction: column;
+    padding: 10px;
+  }
+
+  .tabs button {
+    margin: 8px 20px;
+    padding: 14px;
+    font-size: 1.2rem;
+  }
+
+  .banner-container {
+    height: 60vh;
+  }
+}
+
+@media (max-width: 480px) {
+  .overlay h1 {
+    font-size: 2.8rem;
+  }
+  
+  .overlay p {
+    font-size: 1.1rem;
+  }
+}

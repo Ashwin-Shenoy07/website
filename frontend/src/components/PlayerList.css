@@ -1,0 +1,109 @@
+/* frontend/src/components/PlayersList.css */
+.players-container {
+  padding: 40px 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.players-container h2 {
+  color: #1b5e20;
+  font-size: 2.8rem;
+  margin-bottom: 40px;
+  font-weight: 900;
+}
+
+.players-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 30px;
+}
+
+.player-card {
+  position: relative;
+  height: 420px;
+  border-radius: 28px;
+  overflow: hidden;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+  cursor: pointer;
+  transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  background: linear-gradient(135deg, #f0f8f0, #e8f5e9);
+}
+
+.player-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 25px 60px rgba(27,94,32,0.4);
+}
+
+.player-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: all 0.6s ease;
+}
+
+.name-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(transparent, rgba(0,0,0,0.9));
+  color: white;
+  padding: 40px 20px 25px;
+  text-align: center;
+  transition: all 0.5s;
+}
+
+.name-overlay h3 {
+  font-size: 1.6rem;
+  margin-bottom: 8px;
+  text-shadow: 2px 2px 8px black;
+}
+
+.name-overlay h4 {
+  font-size: 1.8rem;
+  font-weight: 900;
+  text-shadow: 2px 2px 10px black;
+}
+
+/* EXPANDED STATE */
+.player-card.expanded {
+  height: auto;
+  max-height: 700px;
+}
+
+.player-card.expanded .player-photo {
+  height: 380px;
+  filter: brightness(0.7);
+}
+
+.card-back {
+  padding: 20px;
+  background: white;
+  border-top: 4px solid #1b5e20;
+}
+
+.details p {
+  margin: 12px 0;
+  font-size: 1.15rem;
+  color: #333;
+}
+
+.details strong {
+  color: #1b5e20;
+}
+
+.click-hint {
+  margin-top: 20px;
+  font-style: italic;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.loading {
+  text-align: center;
+  padding: 100px;
+  font-size: 2.2rem;
+  color: #1b5e20;
+  font-weight: bold;
+}
