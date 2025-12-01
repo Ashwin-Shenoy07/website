@@ -9,7 +9,7 @@ const PlayersList = () => {
   const [expandedId, setExpandedId] = useState(null);
 
   useEffect(() => {
-    axios.get('https://your-render-backend.onrender.com/api/players')
+    axios.get('https://website-k3qa.onrender.com/api/players')
       .then(res => {
         setPlayers(res.data);
         setLoading(false);
