@@ -104,7 +104,7 @@ router.post('/register', (req, res) => {
 });
 
 // Get all players (for the "View Players" tab)
-app.get('/api/players', async (req, res) => {
+router.get('/viewPlayers', async (req, res) => {
   try {
     const players = await Player.find()
       .sort({ regNumber: 1 })  // CCL2026-001, 002, 003...
