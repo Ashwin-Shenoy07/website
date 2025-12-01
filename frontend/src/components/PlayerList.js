@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './PlayerList.css';
 
-const PlayersList = () => {
+const PlayerList = () => {
   const [players, setPlayers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [expandedId, setExpandedId] = useState(null);
@@ -11,6 +11,7 @@ const PlayersList = () => {
   useEffect(() => {
     axios.get('https://website-k3qa.onrender.com/api/players')
       .then(res => {
+        console.log('res:', JSON.stringify(res));
         setPlayers(res.data);
         setLoading(false);
       })
@@ -69,4 +70,4 @@ const PlayersList = () => {
   );
 };
 
-export default PlayersList;
+export default PlayerList;

@@ -10,7 +10,7 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
-app.use('/api/players', require('./routes/players'));
+// app.use('/api/players', require('./routes/players'));
 
 app.get('/api/players', async (req, res) => {
   try {

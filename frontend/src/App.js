@@ -1,7 +1,7 @@
 // frontend/src/App.js
 import React, { useState } from 'react';
 import RegistrationForm from './components/RegistrationForm';
-import PlayersList from './components/PlayerList';
+import PlayerList from './components/PlayerList';
 import './App.css';
 
 function App() {
@@ -37,7 +37,7 @@ function App() {
       {/* Content */}
       <div className="tab-content">
         {activeTab === 'register' && <RegistrationForm />}
-        {activeTab === 'view' && <PlayersList />}
+        {activeTab === 'view' && <PlayerList />}
       </div>
     </div>
   );
