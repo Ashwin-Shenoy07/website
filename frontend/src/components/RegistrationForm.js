@@ -14,9 +14,12 @@ const RegistrationForm = () => {
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false); // ← NEW: Hide form on success
+  const [error, setError] = useState('');
+  const [selectedDate, setSelectedDate] = useState('');
 
   const aadharRef = useRef();
   const photoRef = useRef();
+  const ref = useRef();
 
   const handleChange = (e) => {
   const { name, value } = e.target;
@@ -42,6 +45,18 @@ const RegistrationForm = () => {
   else if (name === 'aadharLast4') {
     const digits = value.replace(/\D/g, '').slice(0, 4);
     setFormData({ ...formData, aadharLast4: digits });
+  }
+  else if(name == 'dob'){
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const chosenDate = new Date(value); 
+    chosenDate.setHours(0, 0, 0, 0);
+    if (chosenDate < today) {
+        setError('');
+        setFormData({ ...formData, dob: value });
+      } else {
+        setError('Invalid Date Of Birth');
+      }
   }
   else {
     setFormData({ ...formData, [name]: value });
@@ -130,8 +145,6 @@ const RegistrationForm = () => {
     );
   }
 
-  const ref = useRef();
-
   return (
     <div className="registration-container">
       <div className="form-card">
@@ -148,7 +161,7 @@ const RegistrationForm = () => {
           <input name="place" placeholder="Place / Area" value={formData.place} onChange={handleChange} required />
           <input name="dob" type="text" ref={ref} placeholder="Date of Birth" onChange={handleChange} onFocus={() => {if (ref.current) {
                 ref.current.type = "date"}}} onBlur={() => {if (ref.current) { ref.current.type = formData.dob ? "date" : "text"}}} value={formData.dob} />
-          <span>Note: Date of Birth will your password for future communicatoin</span>          
+          <span style={{ color: '#1f123d' }}>Note: Date of Birth will your password for future communicatoin</span>          
           <input name="aadharLast4" placeholder="Aadhar Last 4 Digits" maxLength="4" value={formData.aadharLast4} onChange={handleChange} required />
 
           <label>Aadhar Proof</label>
@@ -202,6 +215,8 @@ const RegistrationForm = () => {
             ))}
           </div>
 
+          {error && <span style={{ color: 'red' }}>{error}</span>}
+          
           <button type="submit" disabled={loading}>
             {loading ? 'Registering...' : 'REGISTER NOW'}
           </button>
