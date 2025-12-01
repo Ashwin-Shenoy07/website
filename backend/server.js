@@ -10,16 +10,7 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
-// app.use('/api/players', require('./routes/players'));
-
-app.get('/api/players', async (req, res) => {
-  try {
-    const players = await Player.find().sort({ regNumber: 1 });
-    res.json(players);
-  } catch (err) {
-    res.status(500).json({ message: "Error fetching players" });
-  }
-});
+app.use('/api/players', require('./routes/players'));
 
 // MongoDB Connection
 mongoose.connect(process.env.MONGO_URI)
