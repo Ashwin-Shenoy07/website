@@ -172,7 +172,7 @@ const RegistrationForm = () => {
           <input name="place" placeholder="Place / Area" value={formData.place} onChange={handleChange} required />
           <input name="dob" type="text" ref={ref} placeholder="Date of Birth" onChange={handleChange} onFocus={() => {if (ref.current) {
                 ref.current.type = "date"}}} onBlur={() => {if (ref.current) { ref.current.type = formData.dob ? "date" : "text"}}} value={formData.dob} />
-          <span style={{ color:red }}>Note: Date of Birth will your password for future communicatoin</span>          
+          <span style={{ color:'#FF0000' }}>Note: Date of Birth will your password for future communicatoin</span>          
           <input name="aadharLast4" placeholder="Aadhar Last 4 Digits" maxLength="4" value={formData.aadharLast4} onChange={handleChange} required />
 
           <label>Aadhar Proof(Max File Size 5MB)</label>
