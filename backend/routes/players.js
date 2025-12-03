@@ -13,7 +13,7 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-const uploadToCloudinary = (buffer, originalName, customName, folder = 'ccl2026') => {
+const uploadToCloudinary = (buffer, originalName, customName, folder = process.env.CLOUDINARY_FOLDER) => {
   return new Promise((resolve, reject) => {
     const stream = cloudinary.uploader.upload_stream(
       {
@@ -101,6 +101,26 @@ router.post('/register', (req, res) => {
       res.status(500).json({ message: "Registration failed. Please try again." });
     }
   });
+});
+
+// Get all players (for the "View Players" tab)
+router.get('/viewPlayers', async (req, res) => {
+  try {
+    const players = await Player.find()
+      .sort({ regNumber: 1 })  // CCL2026-001, 002, 003...
+      .select('-aadharFile');  // Hide Aadhar URL from public (privacy)
+
+    // Format regNumber properly if not already
+    const formatted = players.map(p => ({
+      ...p._doc,
+      regNumber: p.regNumber ? `CCL2026-${String(p.regNumber).padStart(3, '0')}` : 'Pending'
+    }));
+
+    res.json(formatted);
+  } catch (err) {
+    console.error("Error fetching players:", err);
+    res.status(500).json({ message: "Server error" });
+  }
 });
 
 module.exports = router;
