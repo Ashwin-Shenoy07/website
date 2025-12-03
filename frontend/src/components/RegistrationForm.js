@@ -64,7 +64,18 @@ const RegistrationForm = () => {
 };
 
   const handleFile = (e) => {
-    setFiles({ ...files, [e.target.name]: e.target.files[0] });
+    const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
+    const file = e.target.files[0];
+    if (!file) return;
+    if (file.size > MAX_FILE_SIZE) {
+      alert("File is too large! Max allowed size is 5 MB.");
+      e.target.value = ""; 
+      return;
+    }
+    else
+    {
+      setFiles({ ...files, [e.target.name]: e.target.files[0] });
+    }
   };
 
   const resetForm = () => {
@@ -161,14 +172,14 @@ const RegistrationForm = () => {
           <input name="place" placeholder="Place / Area" value={formData.place} onChange={handleChange} required />
           <input name="dob" type="text" ref={ref} placeholder="Date of Birth" onChange={handleChange} onFocus={() => {if (ref.current) {
                 ref.current.type = "date"}}} onBlur={() => {if (ref.current) { ref.current.type = formData.dob ? "date" : "text"}}} value={formData.dob} />
-          <span style={{ color: '#1f123d' }}>Note: Date of Birth will your password for future communicatoin</span>          
+          <span style={{ color: 'red',font-size:0.75rem }}>Note: Date of Birth will your password for future communicatoin</span>          
           <input name="aadharLast4" placeholder="Aadhar Last 4 Digits" maxLength="4" value={formData.aadharLast4} onChange={handleChange} required />
 
-          <label>Aadhar Proof</label>
-          <input type="file" name="aadharFile" onChange={handleFile} required />
+          <label>Aadhar Proof(Max File Size 5MB)</label>
+          <input type="file" multiple={false} name="aadharFile" onChange={handleFile} required />
 
-          <label>Profile Photo (JPG/PNG)</label>
-          <input type="file" name="profilePhoto" accept="image/*" onChange={handleFile} required />
+          <label>Profile Photo (JPG/PNG)(Max File Size 5MB)</label>
+          <input type="file" name="profilePhoto" multiple={false} accept="image/*" onChange={handleFile} required />
 
           <div className="radio-group">
             <label>Category:</label>
