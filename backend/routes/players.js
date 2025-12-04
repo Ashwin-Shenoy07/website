@@ -205,15 +205,15 @@ router.post('/register', (req, res) => {
     }
 
     try {
-      const { name, mobile, place, dateOfBirth } = req.body;
+      const { name, mobile, place, dob } = req.body;
 
       // VALIDATE REQUIRED FIELDS
-      if (!name || !mobile || !place || !dateOfBirth) {
+      if (!name || !mobile || !place || !dob) {
         return res.status(400).json({ message: "All fields are required including Date of Birth" });
       }
 
       // VALIDATE DOB FIRST — BEFORE ANY FILE UPLOAD
-      if (!isValidDate(dateOfBirth)) {
+      if (!isValidDate(dob)) {
         return res.status(400).json({
           message: "Invalid Date of Birth",
           details: "Please enter a valid date (YYYY-MM-DD). Example: 2005-06-15"
