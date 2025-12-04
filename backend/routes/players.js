@@ -45,7 +45,19 @@ router.post('/register', (req, res) => {
     if (err) return res.status(400).json({ message: "File too large or invalid" });
 
     try {
-      const { name, mobile, place } = req.body;
+      const { name, mobile, place, dob } = req.body;
+
+      if(dob){
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const chosenDate = dob; 
+        chosenDate.setHours(0, 0, 0, 0);
+          if (chosenDate >= today) {
+            // setError('');
+            // setFormData({ ...formData, dob: value });
+            return res.status(400).json({ message: "Invalid Date of Birth!" });
+          }
+      }
 
       // 1. Prevent duplicate mobile
       const existing = await Player.findOne({ mobile });
