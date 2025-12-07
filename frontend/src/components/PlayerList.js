@@ -1,34 +1,87 @@
 import React, { useState, useEffect } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMagnifyingGlass, faXmark } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import './PlayerList.css';
 
 const PlayersList = () => {
   const [players, setPlayers] = useState([]);
+  const [filteredPlayers, setFilteredPlayers] = useState([]);
   const [expandedId, setExpandedId] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [showMobileSearch, setShowMobileSearch] = useState(false);
 
-  const backendURL = process.env.REACT_APP_BACKEND_URL; 
+  const backendURL = process.env.REACT_APP_BACKEND_URL;
+
   useEffect(() => {
     axios.get(`${backendURL}api/players/viewPlayers`)
       .then(res => {
         setPlayers(res.data);
+        setFilteredPlayers(res.data);
         setLoading(false);
       })
       .catch(() => setLoading(false));
-  }, []);
+  }, [backendURL]);
 
-const toggle = (id) => {
-    setExpandedId(expandedId === id ? null : id);
-  };
+  // Real-time search
+  useEffect(() => {
+    const term = searchTerm.toLowerCase();
+    const result = players.filter(p =>
+      p.name.toLowerCase().includes(term) ||
+      p.mobile.includes(searchTerm)
+    );
+    setFilteredPlayers(result);
+  }, [searchTerm, players]);
 
-  if (loading) return <div className="loading">Loading Players...</div>;
+  const toggle = (id) => setExpandedId(prev => prev === id ? null : id);
+
+  if (loading) return <div className="loader">Loading Players...</div>;
 
   return (
     <div className="players-grid-container">
-      
 
+      {/* HEADING + SEARCH IN SAME ROW */}
+      <div className="header-with-search">
+        <h2>All Registered Players ({filteredPlayers.length})</h2>
+
+        {/* Desktop Search */}
+        <div className="desktop-search">
+          <input
+            type="text"
+            placeholder="Search by Name or Phone..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <span className="search-icon-clean"><FontAwesomeIcon icon={faMagnifyingGlass} /></span>
+        </div>
+
+        {/* Mobile Search Toggle */}
+        <button 
+          className="mobile-search-toggle"
+          onClick={() => setShowMobileSearch(!showMobileSearch)}
+        >
+          <FontAwesomeIcon 
+          icon={showMobileSearch ? faXmark : faMagnifyingGlass}/>
+        </button>
+      </div>
+
+      {/* Mobile Search Input (Slides Down) */}
+      {showMobileSearch && (
+        <div className="mobile-search-input">
+          <input
+            type="text"
+            placeholder="Search by Name or Phone..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            autoFocus
+          />
+        </div>
+      )}
+
+      {/* YOUR GRID — UNCHANGED */}
       <div className="players-grid">
-        {players.map(player => {
+        {filteredPlayers.map(player => {
           const isOpen = expandedId === player._id;
           const regNo = player.regNumber 
             ? `${String(player.regNumber).padStart(3, '0')}` 
@@ -40,7 +93,6 @@ const toggle = (id) => {
               className={`player-grid-card ${isOpen ? 'expanded' : ''}`}
               onClick={() => toggle(player._id)}
             >
-              {/* Compact View */}
               <div className="compact-view">
                 <img src={player.profilePhoto} alt={player.name} className="profile-pic" />
                 <div className="info">
@@ -51,7 +103,6 @@ const toggle = (id) => {
                 <span className="expand-icon">{isOpen ? '−' : '+'}</span>
               </div>
 
-              {/* Expanded Details */}
               {isOpen && (
                 <div className="expanded-details">
                   <div className="detail"><span>Category:</span> {player.category}</div>
@@ -72,102 +123,3 @@ const toggle = (id) => {
 };
 
 export default PlayersList;
-
-// design 2
-// import React, { useState, useEffect } from 'react';
-// import axios from 'axios';
-// import './PlayerList.css';
-
-// const PlayersList = () => {
-//   const [players, setPlayers] = useState([]);
-//   const [expandedId, setExpandedId] = useState(null); // ← Fixed name
-//   const [loading, setLoading] = useState(true);
-
-//   useEffect(() => {
-//     axios.get('https://website-k3qa.onrender.com/api/players/viewPlayers')
-//       .then(res => {
-//         setPlayers(res.data);
-//         setLoading(false);
-//       })
-//       .catch(() => setLoading(false));
-//   }, []);
-
-//   const toggle = (id) => {
-//     setExpandedId(prev => prev === id ? null : id); // ← Now correct
-//   };
-
-//   if (loading) return <div className="loader">Loading Players...</div>;
-
-//   return (
-//     <div className="players-page">
-
-//       <div className="players-list-vertical">
-//         {players.map(player => {
-//           const isOpen = expandedId === player._id; // ← Now matches state name
-//           const reg = player.regNumber ? String(player.regNumber).padStart(3, '0') : '000';
-
-//           return (
-//             <div
-//               key={player._id}
-//               className={`player-item ${isOpen ? 'open' : ''}`}
-//               onClick={() => toggle(player._id)}
-//             >
-//               {/* Header Row */}
-//               <div className="player-header">
-//                 <img src={player.profilePhoto} alt={player.name} className="avatar" />
-                
-//                 <div className="player-main-info">
-//                   <h3>{player.name}</h3>
-//                   <div className="sub-info">
-//                     <span className="reg-id">{reg}</span>
-//                     <span className="location">{player.place}</span>
-//                   </div>
-//                 </div>
-
-//                 <div className={`arrow ${isOpen ? 'down' : 'right'}`}></div>
-//               </div>
-
-//               {/* Expanded Details */}
-//               {isOpen && (
-//                 <div className="player-details">
-//                   <div className="detail-grid">
-//                     <div className="detail-item">
-//                       <span className="label">Category</span>
-//                       <span className="value">{player.category}</span>
-//                     </div>
-//                     <div className="detail-item">
-//                       <span className="label">Batting Style</span>
-//                       <span className="value">{player.battingStyle}</span>
-//                     </div>
-//                     <div className="detail-item">
-//                       <span className="label">Bowling Style</span>
-//                       <span className="value">{player.bowlingStyle || '—'}</span>
-//                     </div>
-//                     <div className="detail-item">
-//                       <span className="label">Jersey Name</span>
-//                       <span className="value">{player.nameOnJersey || player.name}</span>
-//                     </div>
-//                     <div className="detail-item">
-//                       <span className="label">Jersey No.</span>
-//                       <span className="value">#{player.numberOnJersey}</span>
-//                     </div>
-//                     <div className="detail-item">
-//                       <span className="label">Jersey Size</span>
-//                       <span className="value">{player.jerseySize}</span>
-//                     </div>
-//                     <div className="detail-item">
-//                       <span className="label">Last Season</span>
-//                       <span className="value">{player.playedLastSeason}</span>
-//                     </div>
-//                   </div>
-//                 </div>
-//               )}
-//             </div>
-//           );
-//         })}
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default PlayersList;
