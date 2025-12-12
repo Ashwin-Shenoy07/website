@@ -36,7 +36,7 @@ const PlayersList = () => {
 
   const toggle = (id) => setExpandedId(prev => prev === id ? null : id);
 
-  if (loading) return <div className="loader">Loading Players...</div>;
+  if (loading) return <div className="loader">Loading Players...<div class="loader-striped"></div></div>;
 
   return (
     <div className="players-grid-container">
