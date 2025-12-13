@@ -13,7 +13,7 @@ const AdminLogin = () => {
 
     try {
       const res = await axios.post(
-        `${process.env.REACT_APP_BACKEND_URL}api/admin/auth/login`,
+        `${process.env.REACT_APP_BACKEND_URL}api/admin/login`,
         { identifier, password },
         { withCredentials: true } // 🔴 REQUIRED FOR COOKIE
       );

@@ -1,7 +1,55 @@
 const express = require("express");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
+const Admin = require("../models/Admin");
 
+// 🔴 ADMIN LOGIN ROUTE (MISSING)
+router.post("/login", async (req, res) => {
+  try {
+    const { identifier, password } = req.body;
+
+    if (!identifier || !password) {
+      return res.status(400).json({ message: "All fields required" });
+    }
+
+    const admin = await Admin.findOne({
+      $or: [{ email: identifier }, { phone: identifier }]
+    });
+
+    if (!admin) {
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
+
+    const isMatch = await bcrypt.compare(password, admin.password);
+    if (!isMatch) {
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
+
+    const token = jwt.sign(
+      { id: admin._id, role: admin.role },
+      process.env.JWT_SECRET,
+      { expiresIn: "1d" }
+    );
+
+    res.cookie("adminToken", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "None",
+      maxAge: 24 * 60 * 60 * 1000
+    });
+
+    res.status(200).json({
+      message: "Admin login successful"
+    });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+// ✅ AUTH CHECK ROUTE
 router.get("/check", (req, res) => {
   const token = req.cookies.adminToken;
 
