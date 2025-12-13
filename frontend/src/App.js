@@ -89,17 +89,15 @@ function App() {
         {/* PUBLIC SITE */}
         <Route path="/" element={<PublicLayout />} />
 
-        {/* HIDDEN ADMIN ROUTES */}
         <Route path="/admin/login" element={<AdminLogin />} />
-
-        <Route
-          path="/admin/dashboard"
-          element={
-            <AdminProtectedRoute>
-              <AdminDashboard />
-            </AdminProtectedRoute>
-          }
-        />
+<Route
+  path="/admin/dashboard"
+  element={
+    <AdminProtectedRoute>
+      <AdminDashboard />
+    </AdminProtectedRoute>
+  }
+/>
 
         {/* FALLBACK */}
         <Route path="*" element={<Navigate to="/" />} />
