@@ -30,10 +30,10 @@ exports.adminLogin = async (req, res) => {
       { expiresIn: "1d" }
     );
 
+    // ✅ Cookie setup works for localhost, staging, production
     res.cookie("adminToken", token, {
       httpOnly: true,
-      secure: true,
-      sameSite: "None",
+      sameSite:"Lax",
       maxAge: 24 * 60 * 60 * 1000
     });
 

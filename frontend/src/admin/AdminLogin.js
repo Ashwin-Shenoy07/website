@@ -1,36 +1,37 @@
+// frontend/src/admin/AdminLogin.js
 import React, { useState } from "react";
 import axios from "axios";
-import "./AdminLogin.css";
+import { useNavigate } from "react-router-dom";
 
 const AdminLogin = () => {
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    setError("");
 
     try {
-      await axios.post(
-        `${process.env.REACT_APP_BACKEND_URL}api/admin/login`,
+      const res = await axios.post(
+        `${process.env.REACT_APP_BACKEND_URL}api/admin/auth/login`,
         { identifier, password },
-        { withCredentials: true }
+        { withCredentials: true } // 🔴 REQUIRED FOR COOKIE
       );
 
-      window.location.href = "/admin/dashboard";
+      if (res.status === 200) {
+        // ✅ REDIRECT HERE
+        navigate("/admin/dashboard");
+      }
     } catch (err) {
-      setError(err.response?.data?.message || "Login failed");
+      alert(err.response?.data?.message || "Login failed");
     }
   };
 
   return (
-    <div className="admin-login-container">
-      <form className="admin-login-card" onSubmit={handleSubmit}>
-        <h2>Admin Login</h2>
+    <div className="admin-login">
+      <h2>Admin Login</h2>
 
-        {error && <p className="error">{error}</p>}
-
+      <form onSubmit={handleLogin}>
         <input
           type="text"
           placeholder="Email or Phone"
