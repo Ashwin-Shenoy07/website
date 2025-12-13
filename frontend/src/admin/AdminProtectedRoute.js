@@ -6,14 +6,16 @@ const AdminProtectedRoute = ({ children }) => {
 
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_BACKEND_URL}/api/admin/players`, {
+      .get(`${process.env.REACT_APP_BACKEND_URL}/api/admin/auth/check`, {
         withCredentials: true
       })
       .then(() => setAuthorized(true))
       .catch(() => setAuthorized(false));
   }, []);
 
-  if (authorized === null) return null;
+  if (authorized === null) {
+    return <div>Checking admin access...</div>;
+  }
 
   if (!authorized) {
     window.location.href = "/admin/login";
