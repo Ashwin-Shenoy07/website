@@ -1,0 +1,114 @@
+.news-page {
+  padding: 25px;
+}
+
+.news-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.news-header h2{
+    color: #1976d2;
+}
+
+.create-btn {
+  background: #1976d2;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  width: fit-content;
+  font-size: 1rem;
+  margin-top: 0;
+}
+
+.news-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 15px;
+}
+
+.news-list p{
+    color: #555;
+}
+.news-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 14px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+}
+
+.news-card h3 {
+  margin-bottom: 8px;
+  color: #1976d2;
+}
+
+.summary {
+  color: #555;
+  font-size: 14px;
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal {
+  background: white;
+  width: 500px;
+  height: fit-content;
+  max-width: 90%;
+  padding: 20px;
+  border-radius: 10px;
+  position: relative;
+}
+
+.modal h2{
+    color: black;
+}
+
+.close-btn {
+    position: absolute;
+    right: 10px;
+    top: 15px;
+    width: fit-content;
+    height: fit-content;
+    background: #dc2626;
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 0;
+    font-size: 1rem;
+}
+
+.news-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.news-actions button {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  margin-left: 8px;
+  font-size: 14px;
+}
+
+.news-actions .delete {
+  color: #d32f2f;
+}

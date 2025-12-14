@@ -228,7 +228,7 @@ const RegistrationForm = () => {
 
           {error && <span style={{ color: 'red' }}>{error}</span>}
           
-          <button type="submit" disabled={loading}>
+          <button className="submit-btn" type="submit" disabled={loading}>
             {loading ? 'Registering...' : 'REGISTER NOW'}
           </button>
         </form>

@@ -1,23 +1,20 @@
 import React, { useContext } from "react";
 import AdminLayout from "./AdminLayout";
 import AdminContext from "./AdminContext";
-import NewsForm from "./NewsForm";
-import EventForm from "./EventForm";
+import News from "./News";
+import Event from "./Event";
+import Dashboard from "./Dashboard";
+
 
 const AdminDashboard = () => {
   const { activeSection } = useContext(AdminContext);
 
   return (
     <AdminLayout>
-      {activeSection === "dashboard" && (
-        <>
-          <h2>Dashboard</h2>
-          <p>Welcome to CCL 2026 Admin Panel</p>
-        </>
-      )}
+      {activeSection === "dashboard" && <Dashboard /> }
 
-      {activeSection === "news" && <NewsForm />}
-      {activeSection === "events" && <EventForm />}
+      {activeSection === "news" && <News />}
+      {activeSection === "events" && <Event />}
     </AdminLayout>
   );
 };

@@ -10,19 +10,23 @@
 
 .admin-header h3 {
   margin: 0;
-}
-
-.admin-header-right {
-  display: flex;
-  align-items: center;
-  gap: 15px;
+  color: black;
 }
 
 .logout-btn {
+  margin-top: 0;
+  background: none;
   border: none;
-  padding: 6px 12px;
+  color: #ff4d4f;
   cursor: pointer;
-  background: #e53935;
-  color: white;
-  border-radius: 4px;
+  font-size: 18px;
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.logout-btn:hover {
+  color: #d9363e;
+  transform: scale(1.1);
 }
