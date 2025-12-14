@@ -8,6 +8,7 @@ import PlayersList from './components/PlayerList';
 import AdminLogin from "./admin/AdminLogin";
 import AdminDashboard from "./admin/AdminDashboard";
 import AdminProtectedRoute from "./admin/AdminProtectedRoute";
+import AdminProvider from "./admin/AdminProvider";
 
 import './App.css';
 import logo from './asset/logo.png';
@@ -90,11 +91,14 @@ function App() {
         <Route path="/" element={<PublicLayout />} />
 
         <Route path="/admin/login" element={<AdminLogin />} />
-<Route
+
+        <Route
   path="/admin/dashboard"
   element={
     <AdminProtectedRoute>
-      <AdminDashboard />
+      <AdminProvider>
+        <AdminDashboard />
+      </AdminProvider>
     </AdminProtectedRoute>
   }
 />
