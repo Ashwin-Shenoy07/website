@@ -26,8 +26,16 @@ app.use(cookieParser());
 
 // -------------------- ROUTES --------------------
 app.use('/api/players', require('./routes/players'));
+
+// PUBLIC
+app.use("/api/news", require("./routes/newsRoutes"));
+app.use("/api/events", require("./routes/eventRoutes"));
+
+// ADMIN
 app.use("/api/admin/auth", require("./routes/adminAuthRoutes"));
 app.use("/api/admin", require("./routes/adminRoutes"));
+app.use("/api/admin/news", require("./routes/adminNewsRoutes"));
+app.use("/api/admin/events", require("./routes/adminEventRoutes"));
 
 // -------------------- MONGODB CONNECTION --------------------
 mongoose.connect(process.env.MONGO_URI)
