@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import AdminLayout from "./AdminLayout";
 import AdminContext from "./AdminContext";
 import News from "./News";
-import Event from "./Event";
+// import Event from "./Event";
 import Dashboard from "./Dashboard";
 
 
@@ -14,7 +14,7 @@ const AdminDashboard = () => {
       {activeSection === "dashboard" && <Dashboard /> }
 
       {activeSection === "news" && <News />}
-      {activeSection === "events" && <Event />}
+      {/* {activeSection === "events" && <Event />} */}
     </AdminLayout>
   );
 };
