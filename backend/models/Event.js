@@ -13,12 +13,6 @@ const eventSchema = new mongoose.Schema(
       required: true
     },
 
-    venue: {
-      type: String,
-      required: true,
-      trim: true
-    },
-
     description: {
       type: String,
       required: true
@@ -33,6 +27,12 @@ const eventSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Admin"
     },
+
+    summary: {
+  type: String,
+  required: true,
+  trim: true
+},
 
     isActive: {
       type: Boolean,
