@@ -15,7 +15,7 @@ const AdminHeader = () => {
       { withCredentials: true }
     );
 
-    navigate("/admin/login");
+    navigate("/admin/login", { replace: true });
   } catch (err) {
     alert("Logout failed");
   }

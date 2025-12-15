@@ -7,17 +7,8 @@ const cookieParser = require("cookie-parser");
 const app = express();
 
 // -------------------- CORS --------------------
-const allowedOrigins = [
-  "http://localhost:3000",
-  process.env.FRONTEND_URL
-];
-
 app.use(cors({
-  origin: function(origin, callback) {
-    if (!origin) return callback(null, true); // Postman etc.
-    if (allowedOrigins.indexOf(origin) !== -1) return callback(null, true);
-    callback(new Error("CORS not allowed"));
-  },
+  origin: process.env.FRONTEND_URL,
   credentials: true
 }));
 

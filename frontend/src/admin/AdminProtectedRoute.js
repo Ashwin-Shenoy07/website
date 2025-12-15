@@ -7,21 +7,23 @@ const AdminProtectedRoute = ({ children }) => {
   const [authorized, setAuthorized] = useState(null);
 
   useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_BACKEND_URL}api/admin/auth/check`, {
-        withCredentials: true
-      })
-      .then(() => setAuthorized(true))
-      .catch(() => setAuthorized(false));
+    const check = async () => {
+      try {
+        await axios.get(
+          `${process.env.REACT_APP_BACKEND_URL}api/admin/auth/check`,
+          { withCredentials: true }
+        );
+        setAuthorized(true);
+      } catch {
+        setAuthorized(false);
+      }
+    };
+    check();
   }, []);
 
-  if (authorized === null) return null;
+  if (authorized === null) return <div>Checking authentication...</div>;
 
-  if (!authorized) {
-    return <Navigate to="/admin/login" replace />;
-  }
-
-  return children;
+  return authorized ? children : <Navigate to="/admin/login" replace />;
 };
 
 export default AdminProtectedRoute;

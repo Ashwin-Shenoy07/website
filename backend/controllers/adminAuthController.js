@@ -3,6 +3,12 @@ const Admin = require("../models/Admin");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
+    const cookieOptions = {
+  httpOnly: true,
+  secure: true,          // 🔥 MUST be true on Render
+  sameSite: "None",      // 🔥 REQUIRED for cross-site
+  path: "/"
+};
 /**
  * ADMIN LOGIN
  */
@@ -33,12 +39,11 @@ exports.adminLogin = async (req, res) => {
       { expiresIn: "1h" } // ⬅️ SHORT expiry for security
     );
 
-    res.cookie("adminToken", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
-      maxAge: 60 * 60 * 1000 // ⬅️ MUST HAVE (1 hour)
-    });
+
+
+// LOGIN
+res.cookie("adminToken", token, cookieOptions);
+
 
     return res.status(200).json({
       message: "Admin login successful",
@@ -80,11 +85,7 @@ exports.checkAuth = (req, res) => {
  */
 exports.adminLogout = (req, res) => {
   try {
-    res.clearCookie("adminToken", {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax"
-    });
+    res.clearCookie("adminToken", cookieOptions);
 
     return res.status(200).json({ message: "Logged out successfully" });
   } catch (err) {
