@@ -27,84 +27,14 @@
   margin-top: 0;
 }
 
-/* Event cards grid */
-.events-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 15px;
-}
-
-.events-list p{
-    color: #555;
-}
-
-/* Card */
-.event-card {
-  background: #fff;
-  border-radius: 10px;
-  padding: 14px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-  display: flex;
-  flex-direction: column;
-}
-
-.event-card img {
-  width: 100%;
-  height: 160px;
-  object-fit: cover;
-  border-radius: 8px;
-  margin-bottom: 10px;
-}
-
-.event-card h3 {
-  margin-bottom: 8px;
+.table-title {
+  margin: 25px 0 10px;
   color: #1976d2;
 }
 
-.event-card .date {
-  font-size: 13px;
-  color: #555;
-  margin-bottom: 6px;
-}
-
-.event-card p {
-  font-size: 14px;
-  color: #444;
-  line-height: 1.4;
-  margin-bottom: 10px;
-}
-
-/* Card actions */
-.card-actions {
-  margin-top: auto;
-  display: flex;
-  justify-content: space-between;
-}
-
-.card-actions button {
-  padding: 6px 12px;
-  font-size: 13px;
-  border-radius: 5px;
-  border: none;
-  cursor: pointer;
-}
-
-.card-actions button:first-child {
-  background: #22c55e;
-  color: #fff;
-}
-
-.card-actions button:first-child:hover {
-  background: #16a34a;
-}
-
-.card-actions .danger {
-  background: #ef4444;
-  color: #fff;
-}
-
-.card-actions .danger:hover {
-  background: #b91c1c;
+.empty-text {
+  color: #666;
+  margin-bottom: 20px;
 }
 
 /* Modal */
@@ -147,4 +77,135 @@
     font-weight: bold;
     margin-top: 0;
     font-size: 1rem;
+}
+
+/* Table */
+.events-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 25px;
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.events-table th,
+.events-table td {
+  padding: 12px;
+  text-align: left;
+  font-size: 14px;
+  color: #333;
+}
+
+.events-table th {
+  background: #f1f5f9;
+  color: #333;
+}
+
+.events-table tr:not(:last-child) {
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.table-img {
+  width: 70px;
+  height: 45px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+/* Actions */
+.action-col {
+  display: flex;
+  gap: 10px;
+}
+
+.edit-btn {
+  background: #22c55e;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.edit-btn:hover {
+  background: #16a34a;
+}
+
+.delete-btn {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.delete-btn:hover {
+  background: #b91c1c;
+}
+
+/* Tabs */
+.event-tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.event-tabs button {
+  padding: 8px 18px;
+  border-radius: 20px;
+  border: none;
+  background: #e5e7eb;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.event-tabs button.active {
+  background: #1976d2;
+  color: white;
+}
+
+/* Controls */
+.table-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.table-controls select {
+  padding: 6px;
+  border-radius: 6px;
+}
+
+/* Empty */
+.empty-cell {
+  text-align: center;
+  padding: 20px;
+  color: #666;
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.pagination button {
+  padding: 6px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background: #1976d2;
+  color: white;
+}
+
+.pagination button:disabled {
+  background: #cbd5e1;
+  cursor: not-allowed;
 }

@@ -9,18 +9,41 @@ import { faXmark, faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 const Events = () => {
   const [events, setEvents] = useState([]);
+  const [activeTab, setActiveTab] = useState("upcoming");
   const [showModal, setShowModal] = useState(false);
   const [editEvent, setEditEvent] = useState(null);
   const [deleteEvent, setDeleteEvent] = useState(null);
 
+  // pagination
+  const [page, setPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+
   const fetchEvents = async () => {
-    const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}api/events`);
+    const res = await axios.get(
+      `${process.env.REACT_APP_BACKEND_URL}api/events`
+    );
     setEvents(res.data);
   };
 
   useEffect(() => {
     fetchEvents();
   }, []);
+
+  const today = new Date();
+
+  const filteredEvents = events.filter(e =>
+    activeTab === "upcoming"
+      ? new Date(e.date) >= today
+      : new Date(e.date) < today
+  );
+
+  // pagination logic
+  const totalPages = Math.ceil(filteredEvents.length / rowsPerPage);
+  const startIndex = (page - 1) * rowsPerPage;
+  const paginatedEvents = filteredEvents.slice(
+    startIndex,
+    startIndex + rowsPerPage
+  );
 
   const handleDelete = async () => {
     await axios.delete(
@@ -31,50 +54,150 @@ const Events = () => {
     fetchEvents();
   };
 
+  // reset page on tab/limit change
+  useEffect(() => {
+    setPage(1);
+  }, [activeTab, rowsPerPage]);
+
   return (
     <div className="events-page">
+      {/* Header */}
       <div className="events-header">
         <h2>Events</h2>
-        <button className="create-btn" onClick={() => {
-          setEditEvent(null);
-          setShowModal(true);
-        }}>
-          + Create News
+        <button
+          className="create-btn"
+          onClick={() => {
+            setEditEvent(null);
+            setShowModal(true);
+          }}
+        >
+          + Create Event
         </button>
       </div>
 
-      <div className="events-list">
-        {events.length === 0 && <p>No events created</p>}
+      {/* Tabs */}
+      <div className="event-tabs">
+        <button
+          className={activeTab === "upcoming" ? "active" : ""}
+          onClick={() => setActiveTab("upcoming")}
+        >
+          Upcoming Events
+        </button>
 
-        {events.map(event => (
-          <div key={event._id} className="event-card">
-            <img src={event.image || "/placeholder.jpg"} alt="" />
-            <h3>{event.title}</h3>
-            <p className="date">
-              📅 {new Date(event.date).toLocaleDateString()}
-            </p>
-            <p>{event.summary}</p>
-
-            <div className="card-actions">
-              <button onClick={() => {
-                setEditEvent(event);
-                setShowModal(true);
-              }}>Edit</button>
-
-              <button className="danger" onClick={() => setDeleteEvent(event)}>
-                Delete
-              </button>
-            </div>
-          </div>
-        ))}
+        <button
+          className={activeTab === "past" ? "active" : ""}
+          onClick={() => setActiveTab("past")}
+        >
+          Past Events
+        </button>
       </div>
 
-      {/* Create / Edit Modal */}
+      {/* Controls */}
+      <div className="table-controls">
+        <span>
+          Showing {paginatedEvents.length} of {filteredEvents.length}
+        </span>
+
+        <select
+          value={rowsPerPage}
+          onChange={e => setRowsPerPage(Number(e.target.value))}
+        >
+          <option value={10}>10 rows</option>
+          <option value={25}>25 rows</option>
+          <option value={50}>50 rows</option>
+        </select>
+      </div>
+
+      {/* Table */}
+      <table className="events-table">
+        <thead>
+          <tr>
+            <th>Image</th>
+            <th>Title</th>
+            <th>Date</th>
+            <th>Summary</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {paginatedEvents.length === 0 ? (
+            <tr>
+              <td colSpan="5" className="empty-cell">
+                No events found
+              </td>
+            </tr>
+          ) : (
+            paginatedEvents.map(event => (
+              <tr key={event._id}>
+                <td>
+                  <img
+                    src={event.image || "/placeholder.jpg"}
+                    alt=""
+                    className="table-img"
+                  />
+                </td>
+                <td>{event.title}</td>
+                <td>
+                  {new Date(event.date).toLocaleDateString()}
+                </td>
+                <td>{event.summary}</td>
+                <td className="action-col">
+                  <button
+                    className="edit-btn"
+                    onClick={() => {
+                      setEditEvent(event);
+                      setShowModal(true);
+                    }}
+                  >
+                    <FontAwesomeIcon icon={faPen} />
+                  </button>
+
+                  <button
+                    className="delete-btn"
+                    onClick={() => setDeleteEvent(event)}
+                  >
+                    <FontAwesomeIcon icon={faTrash} />
+                  </button>
+                </td>
+              </tr>
+            ))
+          )}
+        </tbody>
+      </table>
+
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div className="pagination">
+          <button
+            disabled={page === 1}
+            onClick={() => setPage(p => p - 1)}
+          >
+            Prev
+          </button>
+
+          <span>
+            Page {page} of {totalPages}
+          </span>
+
+          <button
+            disabled={page === totalPages}
+            onClick={() => setPage(p => p + 1)}
+          >
+            Next
+          </button>
+        </div>
+      )}
+
+      {/* Modal */}
       {showModal && (
         <div className="modal-overlay">
           <div className="modal">
-            <h2>{editEvent ? "Edit Event" : "Post Event"}</h2>
-            <button className="close-btn" onClick={() => setShowModal(false)}>
+            <h2>{editEvent ? "Edit Event" : "Create Event"}</h2>
+            <button
+              className="close-btn"
+              onClick={() => setShowModal(false)}
+            >
               <FontAwesomeIcon icon={faXmark} />
             </button>
 
@@ -87,7 +210,7 @@ const Events = () => {
         </div>
       )}
 
-      {/* Delete Confirmation */}
+      {/* Delete Confirm */}
       {deleteEvent && (
         <ConfirmModal
           title="Delete Event?"
