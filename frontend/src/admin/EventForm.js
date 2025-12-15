@@ -9,7 +9,7 @@ const EventForm = ({ onSuccess, editData, onClose }) => {
     summary: "",
     description: "",
     image: "",
-    eventDate: ""
+    date: ""
   });
 
   const [message, setMessage] = useState("");
@@ -59,7 +59,7 @@ const EventForm = ({ onSuccess, editData, onClose }) => {
 
       <input name="title" placeholder="Event Title" value={form.title} onChange={handleChange} required />
       <input name="summary" placeholder="Short Summary" value={form.summary} onChange={handleChange} required />
-      <input type="date" name="eventDate" value={form.eventDate} onChange={handleChange} required />
+      <input type="date" name="date" value={form.date} onChange={handleChange} required />
       <input name="image" placeholder="Image URL" value={form.image} onChange={handleChange} />
 
       <textarea

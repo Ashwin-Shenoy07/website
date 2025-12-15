@@ -51,7 +51,7 @@ const Events = () => {
             <img src={event.image || "/placeholder.jpg"} alt="" />
             <h3>{event.title}</h3>
             <p className="date">
-              📅 {new Date(event.eventDate).toLocaleDateString()}
+              📅 {new Date(event.date).toLocaleDateString()}
             </p>
             <p>{event.summary}</p>
 
