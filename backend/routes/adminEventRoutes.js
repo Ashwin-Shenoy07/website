@@ -17,11 +17,11 @@ cloudinary.config({
 // ================= MULTER STORAGE FOR EVENTS =================
 const eventStorage = new CloudinaryStorage({
   cloudinary,
-  params: {
-    folder: "eventsAndNews", // 👈 Cloudinary folder name
+  params: async (req, file) => ({
+    folder: process.env.CLOUDINARY_FOLDER + '/events_and_news',
     allowed_formats: ["jpg", "jpeg", "png"],
-    public_id: () => `event-${Date.now()}`
-  }
+    public_id: `event-${Date.now()}`
+  })
 });
 
 const upload = multer({
