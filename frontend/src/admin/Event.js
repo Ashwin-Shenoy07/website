@@ -94,7 +94,7 @@ const Events = () => {
 
       {/* Controls */}
       <div className="table-controls">
-        <span>
+        <span className="record-counts">
           Showing {paginatedEvents.length} of {filteredEvents.length}
         </span>
 

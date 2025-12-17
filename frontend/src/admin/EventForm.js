@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import "./EventForm.css";
 
@@ -7,20 +7,22 @@ const EventForm = ({ onSuccess, editData, onClose }) => {
     title: "",
     summary: "",
     description: "",
-    image: "",
     date: ""
   });
 
+  const [imageFile, setImageFile] = useState(null);
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  // -------------------- PREFILL FORM FOR EDIT --------------------
+  const imageRef = useRef(null);
+
+  // -------------------- PREFILL FOR EDIT --------------------
   useEffect(() => {
     if (editData) {
       setForm({
         title: editData.title || "",
         summary: editData.summary || "",
         description: editData.description || "",
-        image: editData.image || "",
         date: editData.date
           ? new Date(editData.date).toISOString().split("T")[0]
           : ""
@@ -33,25 +35,57 @@ const EventForm = ({ onSuccess, editData, onClose }) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  // -------------------- SUBMIT FORM --------------------
+  // -------------------- HANDLE FILE --------------------
+  const handleFile = e => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const MAX_SIZE = 5 * 1024 * 1024; // 5MB
+    if (file.size > MAX_SIZE) {
+      setMessage("❌ Image size must be less than 5MB");
+      e.target.value = "";
+      return;
+    }
+
+    if (!file.type.startsWith("image/")) {
+      setMessage("❌ Only image files are allowed");
+      e.target.value = "";
+      return;
+    }
+
+    setImageFile(file);
+  };
+
+  // -------------------- SUBMIT --------------------
   const handleSubmit = async e => {
     e.preventDefault();
     setMessage("");
+    setLoading(true);
 
     try {
+      const data = new FormData();
+      data.append("title", form.title);
+      data.append("summary", form.summary);
+      data.append("description", form.description);
+      data.append("date", form.date);
+
+      if (imageFile) {
+        data.append("image", imageFile);
+      }
+
       if (editData) {
-        // UPDATE EVENT
+        // UPDATE
         await axios.put(
           `${process.env.REACT_APP_BACKEND_URL}api/admin/events/${editData._id}`,
-          form,
+          data,
           { withCredentials: true }
         );
         setMessage("✅ Event updated successfully");
       } else {
-        // CREATE EVENT
+        // CREATE
         await axios.post(
           `${process.env.REACT_APP_BACKEND_URL}api/admin/events`,
-          form,
+          data,
           { withCredentials: true }
         );
         setMessage("✅ Event created successfully");
@@ -60,8 +94,10 @@ const EventForm = ({ onSuccess, editData, onClose }) => {
       onSuccess();
       onClose();
     } catch (err) {
-      console.error("Event save error:", err.response?.data || err.message);
+      console.error(err.response?.data || err.message);
       setMessage("❌ Failed to save event");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -96,11 +132,16 @@ const EventForm = ({ onSuccess, editData, onClose }) => {
       />
 
       <input
+        type="file"
         name="image"
-        placeholder="Image URL"
-        value={form.image}
-        onChange={handleChange}
+        accept="image/*"
+        ref={imageRef}
+        onChange={handleFile}
       />
+
+      {editData?.image && !imageFile && (
+        <p className="hint">Existing image will be kept</p>
+      )}
 
       <textarea
         name="description"
@@ -112,8 +153,8 @@ const EventForm = ({ onSuccess, editData, onClose }) => {
       />
 
       <div className="form-actions">
-        <button type="submit">
-          {editData ? "Update Event" : "Create Event"}
+        <button type="submit" disabled={loading}>
+          {loading ? "Saving..." : editData ? "Update Event" : "Create Event"}
         </button>
       </div>
     </form>

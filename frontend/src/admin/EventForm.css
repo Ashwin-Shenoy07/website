@@ -10,3 +10,11 @@
     font-weight: bold;
     width: 100%;
 }
+.record-counts{
+    color: #333;
+}
+
+.hints{
+    color: red;
+    font-size: 12px;
+}
