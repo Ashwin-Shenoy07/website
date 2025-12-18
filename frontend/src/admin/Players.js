@@ -13,18 +13,24 @@ const Players = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [activePlayer, setActivePlayer] = useState(null);
 
-  const fetchPlayers = async () => {
-    const { data } = await axios.get(
-      `${process.env.REACT_APP_BACKEND_URL}api/players/viewPlayers?search=${search}&page=${page}&limit=${limit}`,
+const fetchPlayers = async () => {
+  try {
+    const res = await axios.get(
+      `${process.env.REACT_APP_API_URL}/api/admin/players?page=${page}&limit=10`,
       { withCredentials: true }
     );
-    setPlayers(data.players);
-    setTotalPages(data.totalPages);
-  };
 
-  useEffect(() => {
-    fetchPlayers();
-  }, [search, page, limit]);
+    setPlayers(res.data.players || []);
+    setTotalPages(res.data.totalPages || 1);
+  } catch (error) {
+    console.error("Error fetching players:", error);
+    setPlayers([]);
+  }
+};
+
+useEffect(() => {
+  fetchPlayers();
+}, [page]);
 
   const toggleSelect = (id) => {
     setSelected(
@@ -95,36 +101,25 @@ const Players = () => {
           </tr>
         </thead>
         <tbody>
-  {Array.isArray(players) && players.length > 0 ? (
+  {players.length > 0 ? (
     players.map(player => (
-      <tr key={player._id} className="border-t">
-        <td>
-          <input
-            type="checkbox"
-            checked={selected.includes(player._id)}
-            onChange={() => toggleSelect(player._id)}
-          />
-        </td>
-        <td
-          className="text-blue-600 cursor-pointer"
-          onClick={() => setActivePlayer(player._id)}
-        >
-          {player.name}
-        </td>
-        <td>{player.phone}</td>
-        <td>{player.team}</td>
-        <td>{player.role}</td>
-        <td>{new Date(player.createdAt).toLocaleDateString()}</td>
+      <tr key={player._id}>
+        <td>{player.regNumber}</td>
+        <td>{player.name}</td>
+        <td>{player.mobile}</td>
+        <td>{player.category}</td>
+        <td>{player.place}</td>
       </tr>
     ))
   ) : (
     <tr>
-      <td colSpan="6" className="text-center p-4">
+      <td colSpan="5" style={{ textAlign: "center" }}>
         No players found
       </td>
     </tr>
   )}
 </tbody>
+
       </table>
 
       {/* Pagination */}
