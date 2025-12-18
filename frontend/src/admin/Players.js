@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import * as XLSX from "xlsx";
 import PlayerModal from "./PlayerModal";
+import "./Players.css";
 
 const Players = () => {
   const [players, setPlayers] = useState([]);
@@ -14,7 +15,7 @@ const Players = () => {
 
   const fetchPlayers = async () => {
     const { data } = await axios.get(
-      `${process.env.REACT_APP_BACKEND_URL}api/admin/players?search=${search}&page=${page}&limit=${limit}`,
+      `${process.env.REACT_APP_BACKEND_URL}api/players/viewPlayers?search=${search}&page=${page}&limit=${limit}`,
       { withCredentials: true }
     );
     setPlayers(data.players);
@@ -94,28 +95,36 @@ const Players = () => {
           </tr>
         </thead>
         <tbody>
-          {players.map(player => (
-            <tr key={player._id} className="border-t">
-              <td>
-                <input
-                  type="checkbox"
-                  checked={selected.includes(player._id)}
-                  onChange={() => toggleSelect(player._id)}
-                />
-              </td>
-              <td
-                className="text-blue-600 cursor-pointer"
-                onClick={() => setActivePlayer(player._id)}
-              >
-                {player.name}
-              </td>
-              <td>{player.phone}</td>
-              <td>{player.team}</td>
-              <td>{player.role}</td>
-              <td>{new Date(player.createdAt).toLocaleDateString()}</td>
-            </tr>
-          ))}
-        </tbody>
+  {Array.isArray(players) && players.length > 0 ? (
+    players.map(player => (
+      <tr key={player._id} className="border-t">
+        <td>
+          <input
+            type="checkbox"
+            checked={selected.includes(player._id)}
+            onChange={() => toggleSelect(player._id)}
+          />
+        </td>
+        <td
+          className="text-blue-600 cursor-pointer"
+          onClick={() => setActivePlayer(player._id)}
+        >
+          {player.name}
+        </td>
+        <td>{player.phone}</td>
+        <td>{player.team}</td>
+        <td>{player.role}</td>
+        <td>{new Date(player.createdAt).toLocaleDateString()}</td>
+      </tr>
+    ))
+  ) : (
+    <tr>
+      <td colSpan="6" className="text-center p-4">
+        No players found
+      </td>
+    </tr>
+  )}
+</tbody>
       </table>
 
       {/* Pagination */}

@@ -1,0 +1,162 @@
+/* Page wrapper */
+.p-6 {
+  padding: 24px;
+  background: #f9fafb;
+}
+
+/* Title */
+.text-xl {
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.mb-4 {
+    color: #333;
+  margin-bottom: 16px;
+}
+
+/* Controls row */
+.flex {
+  display: flex;
+}
+
+.gap-4 {
+  gap: 16px;
+}
+
+.border {
+  border: 1px solid #d1d5db;
+}
+
+.w-64 {
+  width: 260px;
+}
+
+.p-2 {
+  padding: 8px 10px;
+}
+
+.bg-green-600 {
+  background-color: #16a34a;
+}
+
+.text-white {
+  color: #ffffff;
+}
+
+.rounded {
+  border-radius: 6px;
+}
+
+.bg-green-600:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
+}
+
+/* Table */
+.w-full {
+  width: 100%;
+}
+
+.players-table,
+table {
+  border-collapse: collapse;
+  background: #ffffff;
+}
+
+table th,
+table td {
+  padding: 10px 12px;
+  font-size: 14px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.bg-gray-100 {
+  background-color: #f3f4f6;
+}
+
+table th {
+  font-weight: 600;
+  text-align: left;
+}
+
+/* Table rows */
+.border-t {
+  border-top: 1px solid #e5e7eb;
+}
+
+table tr:hover {
+  background-color: #f9fafb;
+}
+
+/* Name clickable */
+.text-blue-600 {
+  color: #2563eb;
+  font-weight: 500;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.text-blue-600:hover {
+  text-decoration: underline;
+}
+
+/* Empty state */
+.text-center {
+  text-align: center;
+}
+
+.p-4 {
+  padding: 16px;
+}
+
+.text-center p {
+  color: #6b7280;
+}
+
+/* Pagination */
+.mt-4 {
+  margin-top: 16px;
+}
+
+.gap-2 {
+  gap: 8px;
+}
+
+.mt-4 button {
+  padding: 6px 14px;
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.mt-4 button:disabled {
+  background: #e5e7eb;
+  cursor: not-allowed;
+}
+
+/* Checkbox */
+input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+/* Select */
+select {
+  cursor: pointer;
+  background: #ffffff;
+}
+
+/* Input */
+input[type="text"] {
+  outline: none;
+}
+
+input[type="text"]:focus,
+select:focus {
+  border-color: #2563eb;
+}
