@@ -29,13 +29,17 @@ const Events = () => {
     fetchEvents();
   }, []);
 
-  const today = new Date();
+const today = new Date();
+today.setHours(0, 0, 0, 0);
+const filteredEvents = events.filter(e => {
+  const eventDate = new Date(e.date);
+  eventDate.setHours(0, 0, 0, 0);
 
-  const filteredEvents = events.filter(e =>
-    activeTab === "upcoming"
-      ? new Date(e.date) >= today
-      : new Date(e.date) < today
-  );
+  
+  return activeTab === "upcoming"
+    ? eventDate >= today
+    : eventDate < today;
+});
 
   // pagination logic
   const totalPages = Math.ceil(filteredEvents.length / rowsPerPage);
