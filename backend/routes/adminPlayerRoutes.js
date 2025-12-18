@@ -3,27 +3,29 @@ const router = express.Router();
 const adminAuth = require("../middleware/adminAuthMiddleware");
 const Player = require("../models/Player");
 
-/**
- * GET players
- * - search
- * - pagination
- */
 router.get("/", adminAuth, async (req, res) => {
   try {
     const search = req.query.search?.trim() || "";
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
 
-    const query = search
-      ? {
-          $or: [
-            { name: { $regex: search, $options: "i" } },
-            { mobile: { $regex: search, $options: "i" } },
-            { place: { $regex: search, $options: "i" } },
-            { category: { $regex: search, $options: "i" } }
-          ]
-        }
-      : {};
+    let query = {};
+
+    if (search) {
+      query = {
+        $or: [
+          { name: { $regex: search, $options: "i" } },
+          { mobile: { $regex: search, $options: "i" } },
+          { place: { $regex: search, $options: "i" } },
+          { category: { $regex: search, $options: "i" } },
+          { battingStyle: { $regex: search, $options: "i" } },
+          { bowlingStyle: { $regex: search, $options: "i" } },
+          { jerseySize: { $regex: search, $options: "i" } },
+          { nameOnJersey: { $regex: search, $options: "i" } },
+          { playedLastSeason: { $regex: search, $options: "i" } }
+        ]
+      };
+    }
 
     const players = await Player.find(query)
       .sort({ createdAt: -1 })
@@ -35,8 +37,8 @@ router.get("/", adminAuth, async (req, res) => {
 
     res.status(200).json({
       players,
-      total,
       page,
+      total,
       totalPages: Math.ceil(total / limit)
     });
   } catch (error) {

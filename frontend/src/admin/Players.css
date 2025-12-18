@@ -1,141 +1,84 @@
-/* Page wrapper */
-.p-6 {
+/* Container */
+.players-container {
   padding: 24px;
-  background: #f9fafb;
+  background-color: #f9fafb;
+  font-family: "Segoe UI", Tahoma, sans-serif;
 }
 
-/* Title */
-.text-xl {
+/* Heading */
+.players-container h2 {
   font-size: 22px;
   font-weight: 600;
-}
-
-.mb-4 {
-    color: #333;
   margin-bottom: 16px;
+  color: #1f2937;
 }
 
 /* Controls row */
-.flex {
+.controls {
   display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
 }
 
-.gap-4 {
-  gap: 16px;
-}
-
-.border {
-  border: 1px solid #d1d5db;
-}
-
-.w-64 {
-  width: 260px;
-}
-
-.p-2 {
+.controls input,
+.controls select {
   padding: 8px 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 14px;
+  outline: none;
 }
 
-.bg-green-600 {
+.controls input:focus,
+.controls select:focus {
+  border-color: #2563eb;
+}
+
+.controls button {
   background-color: #16a34a;
-}
-
-.text-white {
   color: #ffffff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
 }
 
-.rounded {
-  border-radius: 6px;
-}
-
-.bg-green-600:disabled {
+.controls button:disabled {
   background-color: #9ca3af;
   cursor: not-allowed;
 }
 
 /* Table */
-.w-full {
-  width: 100%;
-}
-
-.players-table,
 table {
+  width: 100%;
   border-collapse: collapse;
   background: #ffffff;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
 }
 
-table th,
-table td {
-  padding: 10px 12px;
-  font-size: 14px;
-  border-bottom: 1px solid #e5e7eb;
-}
-
-.bg-gray-100 {
+thead {
   background-color: #f3f4f6;
 }
 
-table th {
-  font-weight: 600;
+th,
+td {
+  border: 1px solid #e5e7eb;
+  padding: 10px;
+  font-size: 13px;
   text-align: left;
+  vertical-align: middle;
 }
 
-/* Table rows */
-.border-t {
-  border-top: 1px solid #e5e7eb;
+th {
+  font-weight: 600;
+  color: #374151;
+  text-transform: capitalize;
 }
 
-table tr:hover {
+tbody tr:hover {
   background-color: #f9fafb;
-}
-
-/* Name clickable */
-.text-blue-600 {
-  color: #2563eb;
-  font-weight: 500;
-}
-
-.cursor-pointer {
-  cursor: pointer;
-}
-
-.text-blue-600:hover {
-  text-decoration: underline;
-}
-
-/* Empty state */
-.text-center {
-  text-align: center;
-}
-
-.p-4 {
-  padding: 16px;
-}
-
-.text-center p {
-  color: #6b7280;
-}
-
-/* Pagination */
-.mt-4 {
-  margin-top: 16px;
-}
-
-.gap-2 {
-  gap: 8px;
-}
-
-.mt-4 button {
-  padding: 6px 14px;
-  border: 1px solid #d1d5db;
-  background: #ffffff;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.mt-4 button:disabled {
-  background: #e5e7eb;
-  cursor: not-allowed;
 }
 
 /* Checkbox */
@@ -145,18 +88,59 @@ input[type="checkbox"] {
   cursor: pointer;
 }
 
-/* Select */
-select {
+/* No data row */
+.no-data {
+  text-align: center;
+  padding: 20px;
+  color: #6b7280;
+  font-style: italic;
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.pagination button {
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
   cursor: pointer;
-  background: #ffffff;
+  font-size: 13px;
 }
 
-/* Input */
-input[type="text"] {
-  outline: none;
+.pagination button:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
 }
 
-input[type="text"]:focus,
-select:focus {
-  border-color: #2563eb;
+.pagination span {
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .controls input,
+  .controls select,
+  .controls button {
+    width: 100%;
+  }
 }
