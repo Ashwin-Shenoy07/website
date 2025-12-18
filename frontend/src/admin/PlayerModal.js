@@ -5,7 +5,7 @@ const PlayerModal = ({ playerId, onClose }) => {
   const [player, setPlayer] = useState(null);
 
   useEffect(() => {
-    axios.get(`/api/admin/players/${playerId}`, {
+    axios.get(`${process.env.REACT_APP_BACKEND_URL}api/admin/players/${playerId}`, {
       withCredentials: true
     }).then(res => setPlayer(res.data));
   }, [playerId]);

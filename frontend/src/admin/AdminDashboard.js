@@ -4,6 +4,7 @@ import AdminContext from "./AdminContext";
 import News from "./News";
 import Event from "./Event";
 import Dashboard from "./Dashboard";
+import Players from "./Players";
 
 
 const AdminDashboard = () => {
@@ -15,7 +16,7 @@ const AdminDashboard = () => {
 
       {activeSection === "news" && <News />}
       {activeSection === "events" && <Event />}
-      {activeSection === "players"}
+      {activeSection === "players" && <Players/>}
     </AdminLayout>
   );
 };

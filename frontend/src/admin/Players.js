@@ -14,7 +14,7 @@ const Players = () => {
 
   const fetchPlayers = async () => {
     const { data } = await axios.get(
-      `/api/admin/players?search=${search}&page=${page}&limit=${limit}`,
+      `${process.env.REACT_APP_BACKEND_URL}api/admin/players?search=${search}&page=${page}&limit=${limit}`,
       { withCredentials: true }
     );
     setPlayers(data.players);
