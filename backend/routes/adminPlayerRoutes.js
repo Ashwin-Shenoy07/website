@@ -10,33 +10,33 @@ const Player = require("../models/Player");
  */
 router.get("/", adminAuth, async (req, res) => {
   try {
-    const {
-      search = "",
-      page = 1,
-      limit = 10
-    } = req.query;
+    const search = req.query.search || "";
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) || 10;
 
-    const query = {
-      $or: [
-        { name: { $regex: search, $options: "i" } },
-        { phone: { $regex: search, $options: "i" } },
-        { email: { $regex: search, $options: "i" } },
-        { team: { $regex: search, $options: "i" } },
-        { role: { $regex: search, $options: "i" } }
-      ]
-    };
+    const query = search
+      ? {
+          $or: [
+            { name: { $regex: search, $options: "i" } },
+            { phone: { $regex: search, $options: "i" } },
+            { email: { $regex: search, $options: "i" } },
+            { team: { $regex: search, $options: "i" } },
+            { role: { $regex: search, $options: "i" } }
+          ]
+        }
+      : {};
 
     const players = await Player.find(query)
+      .sort({ createdAt: -1 })
       .skip((page - 1) * limit)
-      .limit(Number(limit))
-      .sort({ createdAt: -1 });
+      .limit(limit);
 
     const total = await Player.countDocuments(query);
 
     res.json({
       players,
       total,
-      page: Number(page),
+      page,
       totalPages: Math.ceil(total / limit)
     });
   } catch (err) {
