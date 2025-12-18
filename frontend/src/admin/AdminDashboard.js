@@ -15,6 +15,7 @@ const AdminDashboard = () => {
 
       {activeSection === "news" && <News />}
       {activeSection === "events" && <Event />}
+      {activeSection === "players"}
     </AdminLayout>
   );
 };

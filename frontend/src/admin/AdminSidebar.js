@@ -31,7 +31,13 @@ const AdminSidebar = () => {
           Events
         </li>
 
-        <li>Players</li>
+        <li
+          className={activeSection === "players" ? "active" : ""}
+          onClick={() => setActiveSection("players")}
+        >
+          Players
+        </li>
+
         <li>Teams</li>
         <li>Settings</li>
       </ul>

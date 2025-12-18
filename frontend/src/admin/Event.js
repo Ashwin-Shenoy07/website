@@ -18,12 +18,13 @@ const Events = () => {
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
-  const fetchEvents = async () => {
-    const res = await axios.get(
-      `${process.env.REACT_APP_BACKEND_URL}api/events`
-    );
-    setEvents(res.data);
-  };
+const fetchEvents = async () => {
+  const res = await axios.get(
+    `${process.env.REACT_APP_BACKEND_URL}api/admin/events`,
+    { withCredentials: true }
+  );
+  setEvents(res.data);
+};
 
   useEffect(() => {
     fetchEvents();
