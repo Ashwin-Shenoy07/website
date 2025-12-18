@@ -29,6 +29,16 @@ const upload = multer({
   limits: { fileSize: 5 * 1024 * 1024 } // 5MB
 });
 
+// GET ALL EVENTS (ADMIN)
+router.get("/", adminAuth, async (req, res) => {
+  try {
+    const events = await Event.find().sort({ date: -1 });
+    res.json(events);
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
 // ================= CREATE EVENT =================
 router.post(
   "/",
