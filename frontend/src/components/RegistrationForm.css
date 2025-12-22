@@ -217,3 +217,23 @@ button:disabled {
     flex-direction: column;
   }
 }
+
+
+
+.registration-closed {
+  text-align: center;
+}
+
+.view-players-btn {
+  display: inline-block;
+  padding: 12px 20px;
+  background-color: #1e88e5;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: bold;
+}
+
+.view-players-btn:hover {
+  background-color: #1565c0;
+}
