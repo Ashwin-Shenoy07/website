@@ -5,6 +5,7 @@ import PlayersList from './components/PlayerList';
 import './App.css';
 import logo from './asset/logo.png';
 import RegistrationClosed from './components/RegistrationClosed';
+import TshirtRegistration from './components/TshirtRegistration';
 
 function App() {
   const [activePage, setActivePage] = useState('players');
@@ -74,6 +75,8 @@ function App() {
         {activePage === 'register' && <RegistrationForm />}
         {activePage === 'register_close' && <RegistrationClosed />}
         {activePage === 'players' && <PlayersList />}
+
+        {activePage === 'tshirt' && <TshirtRegistration />}
       </div>
     </div>
   );
