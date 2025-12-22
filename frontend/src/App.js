@@ -4,9 +4,10 @@ import RegistrationForm from './components/RegistrationForm';
 import PlayersList from './components/PlayerList';
 import './App.css';
 import logo from './asset/logo.png';
+import RegistrationClosed from './components/RegistrationClosed';
 
 function App() {
-  const [activePage, setActivePage] = useState('register');
+  const [activePage, setActivePage] = useState('players');
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
@@ -70,7 +71,8 @@ function App() {
 
       {/* MAIN CONTENT */}
       <div className="main-content">
-        {activePage === 'register' && <RegistrationForm />}
+        {/* {activePage === 'register' && <RegistrationForm />} */}
+        {activePage === 'register' && <RegistrationClosed />}
         {activePage === 'players' && <PlayersList />}
       </div>
     </div>

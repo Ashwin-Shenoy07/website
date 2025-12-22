@@ -1,0 +1,83 @@
+/* Full page center alignment */
+.registration-closed-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f4f6f8;
+  padding: 16px;
+}
+
+/* Card styling */
+.registration-closed-card {
+  background: #ffffff;
+  max-width: 420px;
+  width: 100%;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Banner image */
+.registration-closed-card img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+/* Heading */
+.registration-closed-card h1 {
+  font-size: 1.6rem;
+  margin-bottom: 10px;
+  color: #1a1a1a;
+}
+
+/* Message text */
+.registration-closed-card p {
+  font-size: 1rem;
+  color: #555;
+  line-height: 1.5;
+  margin-bottom: 20px;
+  padding: 10px;
+}
+
+/* View players button */
+.view-players-btn {
+  display: inline-block;
+  width: 100%;
+  padding: 12px;
+  background-color: #1e88e5;
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 600;
+  border-radius: 6px;
+  transition: background-color 0.3s ease;
+}
+
+/* Hover effect (desktop only) */
+.view-players-btn:hover {
+  background-color: #1565c0;
+}
+
+/* Tablet and larger screens */
+@media (min-width: 480px) {
+  .registration-closed-card {
+    max-width: 500px;
+    padding: 28px;
+  }
+
+  .registration-closed-card h1 {
+    font-size: 1.8rem;
+  }
+
+  .registration-closed-card p {
+    font-size: 1.05rem;
+  }
+
+  .view-players-btn {
+    width: auto;
+    padding: 12px 24px;
+  }
+}
