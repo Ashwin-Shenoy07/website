@@ -1,110 +1,161 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import * as XLSX from "xlsx";
+import PlayerModal from "./PlayerModal";
 import "./Players.css";
+
+const allColumns = [
+  { key: "regNumber", label: "Reg No" },
+  { key: "name", label: "Name" },
+  { key: "mobile", label: "Mobile" }
+];
 
 const Players = () => {
   const [players, setPlayers] = useState([]);
-  const [columns, setColumns] = useState([]);
   const [selected, setSelected] = useState([]);
-  const [search, setSearch] = useState("");
+  const [activePlayer, setActivePlayer] = useState(null);
+
+  const [visibleColumns, setVisibleColumns] = useState(
+    allColumns.map(c => c.key)
+  );
+
+  const [sortConfig, setSortConfig] = useState({
+    key: "regNumber",
+    direction: "asc"
+  });
+
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
 
+  // ---------------- FETCH ----------------
   const fetchPlayers = async () => {
-    try {
-      const res = await axios.get(
-        `${process.env.REACT_APP_BACKEND_URL}api/admin/players`,
-        {
-          params: { page, limit, search },
-          withCredentials: true
-        }
-      );
+    const res = await axios.get(
+      `${process.env.REACT_APP_BACKEND_URL}api/admin/players?page=${page}&limit=10`,
+      { withCredentials: true }
+    );
 
-      const data = res.data.players || [];
-      setPlayers(data);
-      setTotalPages(res.data.totalPages || 1);
-
-      // Dynamically extract column names
-      if (data.length > 0) {
-        const keys = Object.keys(data[0]).filter(
-          key => !["_id", "__v", "createdAt", "updatedAt"].includes(key)
-        );
-        setColumns(keys);
-      }
-    } catch (err) {
-      console.error("Error fetching players:", err);
-      setPlayers([]);
-    }
+    setPlayers(res.data.players || []);
+    setTotalPages(res.data.totalPages || 1);
   };
 
   useEffect(() => {
     fetchPlayers();
-  }, [page, limit, search]);
+  }, [page]);
 
+  // ---------------- SORT ----------------
+  const handleSort = (key) => {
+    setSortConfig(prev => ({
+      key,
+      direction: prev.direction === "asc" ? "desc" : "asc"
+    }));
+  };
+
+  const sortedPlayers = [...players].sort((a, b) => {
+    if (a[sortConfig.key] < b[sortConfig.key]) {
+      return sortConfig.direction === "asc" ? -1 : 1;
+    }
+    if (a[sortConfig.key] > b[sortConfig.key]) {
+      return sortConfig.direction === "asc" ? 1 : -1;
+    }
+    return 0;
+  });
+
+  // ---------------- SELECT ----------------
   const toggleSelect = (id) => {
     setSelected(prev =>
       prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]
     );
   };
 
+  const selectAll = () => {
+    if (selected.length === players.length) {
+      setSelected([]);
+    } else {
+      setSelected(players.map(p => p._id));
+    }
+  };
+
+  // ---------------- EXPORT ----------------
   const exportToExcel = () => {
     const exportData = players
       .filter(p => selected.includes(p._id))
-      .map(p => {
-        const row = {};
-        columns.forEach(col => {
-          row[col] = p[col];
-        });
-        return row;
-      });
+      .map(p => ({
+        RegNo: p.regNumber,
+        Name: p.name,
+        Mobile: p.mobile,
+        Place: p.place,
+        Category: p.category,
+        Batting: p.battingStyle,
+        Bowling: p.bowlingStyle
+      }));
 
-    const worksheet = XLSX.utils.json_to_sheet(exportData);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Players");
-    XLSX.writeFile(workbook, "players.xlsx");
+    const ws = XLSX.utils.json_to_sheet(exportData);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Players");
+    XLSX.writeFile(wb, "players.xlsx");
+  };
+
+  // ---------------- COLUMN TOGGLE ----------------
+  const toggleColumn = (key) => {
+    setVisibleColumns(prev =>
+      prev.includes(key)
+        ? prev.filter(c => c !== key)
+        : [...prev, key]
+    );
   };
 
   return (
     <div className="players-container">
       <h2>Registered Players</h2>
 
+      {/* Controls */}
       <div className="controls">
-        <input
-          type="text"
-          placeholder="Search players..."
-          value={search}
-          onChange={(e) => {
-            setPage(1);
-            setSearch(e.target.value);
-          }}
-        />
-
-        <select value={limit} onChange={(e) => setLimit(Number(e.target.value))}>
-          <option value={10}>10 rows</option>
-          <option value={25}>25 rows</option>
-          <option value={50}>50 rows</option>
-        </select>
-
-        <button disabled={!selected.length} onClick={exportToExcel}>
+        <button onClick={exportToExcel} disabled={!selected.length}>
           Export Selected
         </button>
+
+        <div className="column-selector">
+          Columns:
+          {allColumns.map(col => (
+            <label key={col.key}>
+              <input
+                type="checkbox"
+                checked={visibleColumns.includes(col.key)}
+                onChange={() => toggleColumn(col.key)}
+              />
+              {col.label}
+            </label>
+          ))}
+        </div>
       </div>
 
+      {/* Table */}
       <table>
         <thead>
           <tr>
-            <th>Select</th>
-            {columns.map(col => (
-              <th key={col}>{col}</th>
-            ))}
+            <th>
+              <input
+                type="checkbox"
+                checked={selected.length === players.length && players.length > 0}
+                onChange={selectAll}
+              />
+            </th>
+
+            {allColumns.map(col =>
+              visibleColumns.includes(col.key) && (
+                <th key={col.key} onClick={() => handleSort(col.key)}>
+                  {col.label}
+                  {sortConfig.key === col.key &&
+                    (sortConfig.direction === "asc" ? " ▲" : " ▼")}
+                </th>
+              )
+            )}
           </tr>
         </thead>
 
         <tbody>
-          {players.length ? (
-            players.map(player => (
+          {sortedPlayers.length ? (
+            sortedPlayers.map(player => (
               <tr key={player._id}>
                 <td>
                   <input
@@ -114,18 +165,27 @@ const Players = () => {
                   />
                 </td>
 
-                {columns.map(col => (
-                  <td key={col}>
-                    {typeof player[col] === "object" && player[col] !== null
-                      ? JSON.stringify(player[col])
-                      : player[col]}
+                {visibleColumns.includes("regNumber") && (
+                  <td>{player.regNumber}</td>
+                )}
+
+                {visibleColumns.includes("name") && (
+                  <td
+                    className="clickable"
+                    onClick={() => setActivePlayer(player._id)}
+                  >
+                    {player.name}
                   </td>
-                ))}
+                )}
+
+                {visibleColumns.includes("mobile") && (
+                  <td>{player.mobile}</td>
+                )}
               </tr>
             ))
           ) : (
             <tr>
-              <td colSpan={columns.length + 1} className="no-data">
+              <td colSpan="4" className="no-data">
                 No players found
               </td>
             </tr>
@@ -133,6 +193,7 @@ const Players = () => {
         </tbody>
       </table>
 
+      {/* Pagination */}
       <div className="pagination">
         <button disabled={page === 1} onClick={() => setPage(p => p - 1)}>
           Prev
@@ -145,6 +206,14 @@ const Players = () => {
           Next
         </button>
       </div>
+
+      {/* Player Modal */}
+      {activePlayer && (
+        <PlayerModal
+          playerId={activePlayer}
+          onClose={() => setActivePlayer(null)}
+        />
+      )}
     </div>
   );
 };
