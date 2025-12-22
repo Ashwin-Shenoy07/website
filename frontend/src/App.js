@@ -23,8 +23,8 @@ function App() {
         {/* Desktop Menu */}
         <nav className="desktop-menu">
           <button
-            className={activePage === 'register' ? 'active' : ''}
-            onClick={() => setActivePage('register')}
+            className={activePage === 'register_close' ? 'active' : ''}
+            onClick={() => setActivePage('register_close')}
           >
             Register Player
           </button>
@@ -52,8 +52,8 @@ function App() {
         <div className="mobile-menu-overlay" onClick={() => setMenuOpen(false)}>
           <div className="mobile-menu">
             <button 
-              className={activePage === 'register' ? 'active' : ''}
-              onClick={() => { setActivePage('register'); setMenuOpen(false); }}
+              className={activePage === 'register_close' ? 'active' : ''}
+              onClick={() => { setActivePage('register_close'); setMenuOpen(false); }}
             >
               Register Player
             </button>
@@ -71,8 +71,8 @@ function App() {
 
       {/* MAIN CONTENT */}
       <div className="main-content">
-        {/* {activePage === 'register' && <RegistrationForm />} */}
-        {activePage === 'register' && <RegistrationClosed />}
+        {activePage === 'register' && <RegistrationForm />}
+        {activePage === 'register_close' && <RegistrationClosed />}
         {activePage === 'players' && <PlayersList />}
       </div>
     </div>

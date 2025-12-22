@@ -11,6 +11,7 @@ app.use(express.json());
 
 // Routes
 app.use('/api/players', require('./routes/players'));
+app.use("/api/tshirt", require("./routes/tshirtRoutes"));
 
 // MongoDB Connection
 mongoose.connect(process.env.MONGO_URI)
