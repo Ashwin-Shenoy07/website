@@ -35,7 +35,7 @@ const TshirtRegistration = () => {
       <div className="confirm-card">
         <h2>🎉 Registration Successful!</h2>
         <p className="reg-number">
-          Registration No: <b>{confirmation.regNumber}</b>
+          Registration No: <b>{confirmation.tshirtReg}</b>
         </p>
         <p className="thank-you">
           Thank you for registering for the volunteer T-shirt ❤️
