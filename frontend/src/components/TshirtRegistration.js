@@ -21,7 +21,7 @@ const TshirtRegistration = () => {
 
   const submitForm = async (e) => {
     e.preventDefault();
-    setForm({ ...form, [form.isActive]: true });
+    
     const res = await axios.post(
       `${process.env.REACT_APP_BACKEND_URL}api/tshirt/register`,
       form
