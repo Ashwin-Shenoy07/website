@@ -105,6 +105,7 @@ button {
 }
 
 .reg-number {
+  color: #333;
   font-size: 18px;
   margin: 10px 0;
 }
