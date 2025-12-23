@@ -3,7 +3,7 @@ const AutoIncrement = require("mongoose-sequence")(mongoose);
 
 const tshirtRegistrationSchema = new mongoose.Schema(
   {
-    regNumber: { type: Number },
+    tshirtReg: { type: Number },
     name: { type: String, required: true },
     whatsapp: { type: String, required: true },
     shirtSize: {
@@ -18,8 +18,8 @@ const tshirtRegistrationSchema = new mongoose.Schema(
 
 // Auto-increment registration number
 tshirtRegistrationSchema.plugin(AutoIncrement, {
-  inc_field: "regNumber",
-  start_seq: 1001
+  inc_field: "tshirtReg",
+  start_seq: 1
 });
 
 module.exports = mongoose.model(
