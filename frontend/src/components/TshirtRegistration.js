@@ -9,7 +9,8 @@ const TshirtRegistration = () => {
   const [form, setForm] = useState({
     name: "",
     whatsapp: "",
-    shirtSize: ""
+    shirtSize: "",
+    isActive: true
   });
 
   const [confirmation, setConfirmation] = useState(null);
@@ -35,10 +36,10 @@ const TshirtRegistration = () => {
       <div className="confirm-card">
         <h2>🎉 Registration Successful!</h2>
         <p className="reg-number">
-          Registration No: <b>{confirmation.tshirtReg}</b>
+          Order No: <b>{confirmation.tshirtReg}</b>
         </p>
         <p className="thank-you">
-          Thank you for registering for the volunteer T-shirt ❤️
+          Thank you for ordering the volunteer T-shirt ❤️
         </p>
       </div>
 
