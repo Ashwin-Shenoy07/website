@@ -11,7 +11,7 @@ const tshirtRegistrationSchema = new mongoose.Schema(
       enum: ['24','26','28', '30','32','34', '36', '38', '40', '42','44', '46', '48'],
       required: true
     },
-    isActive: {type: Boolean}
+    isActive: {type: Boolean, default: true}
   },
   { timestamps: true }
 );
