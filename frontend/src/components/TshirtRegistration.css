@@ -1,3 +1,37 @@
+/* MENUBAR */
+.menubar {
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 70px;
+  background: linear-gradient(7deg, #4105cc, #1f123d);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px;
+  z-index: 1000;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  backdrop-filter: blur(10px);
+}
+
+.logo{
+  display: flex;
+}
+
+.logo h1 {
+  font-size: 2.4rem;
+  font-weight: 900;
+  color: #ffd700;
+  letter-spacing: 3px;
+}
+
+.logo img{
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 15px;
+}
 .tshirt-container {
   display: flex;
   justify-content: center;
@@ -13,11 +47,14 @@
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-.tshirt-form h2 {
-  text-align: center;
-  margin-bottom: 16px;
+.tshirt-form h3 {
+  color: #333;
 }
 
+.tshirt-form p{
+  color: #333;
+  margin-bottom: 16px;
+}
 .tshirt-image,
 .size-chart {
   width: 100%;
@@ -35,8 +72,8 @@
 
 .sizes {
   display: flex;
-  justify-content: space-between;
-  margin-bottom: 12px;
+  flex-wrap: wrap;
+  gap: 15px;
 }
 
 .sizes label {
@@ -79,7 +116,6 @@ button {
 /* Mobile */
 @media (max-width: 480px) {
   .sizes {
-    flex-wrap: wrap;
-    gap: 6px;
+    flex-direction: column;
   }
 }

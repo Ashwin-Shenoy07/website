@@ -1,8 +1,11 @@
 import { useState } from "react";
 import axios from "axios";
 import "./TshirtRegistration.css";
+import logo from '../asset/logo.png';
+import tshirt from '../asset/tshirt.jpeg';
 
 const TshirtRegistration = () => {
+  
   const [form, setForm] = useState({
     name: "",
     whatsapp: "",
@@ -28,75 +31,51 @@ const TshirtRegistration = () => {
 
   if (confirmation) {
     return (
+      
       <div className="confirm-card">
         <h2>🎉 Registration Successful!</h2>
         <p className="reg-number">
           Registration No: <b>{confirmation.regNumber}</b>
         </p>
         <p className="thank-you">
-          Thank you for registering for the special T-shirt ❤️  
-          We’ll contact you soon on WhatsApp.
+          Thank you for registering for the volunteer T-shirt ❤️
         </p>
       </div>
+
     );
   }
 
   return (
+    <>
+    <div className="menubar">
+          <div className="logo">
+            <img src={logo} alt="CCL Logo" />
+            <h1>CCL 2026</h1>
+          </div>
+    </div>
     <div className="tshirt-container">
       <form className="tshirt-form" onSubmit={submitForm}>
-        <h2>Special T-Shirt Registration</h2>
-
+        <h3>Vijaya Cricketers Saligrama T-Shirt</h3>
+        <p>Rs.400/- per T-shirt.</p>
         <img
-          src="/tshirt.jpg"
+          src={tshirt}
           alt="Tshirt"
           className="tshirt-image"
         />
+        <input type="text" name="name" placeholder="Full Name" value={form.name} onChange={handleChange} required />
 
-        <input
-          type="text"
-          name="name"
-          placeholder="Full Name"
-          value={form.name}
-          onChange={handleChange}
-          required
-        />
-
-        <input
-          type="text"
-          name="whatsapp"
-          placeholder="WhatsApp Number"
-          value={form.whatsapp}
-          onChange={handleChange}
-          required
-        />
-
+        <input type="text" name="whatsapp" placeholder="WhatsApp Number" value={form.whatsapp} onChange={handleChange} required />
+        
         <div className="sizes">
-          <label>
-            <input type="radio" name="shirtSize" value="S" onChange={handleChange} /> S
-          </label>
-          <label>
-            <input type="radio" name="shirtSize" value="M" onChange={handleChange} /> M
-          </label>
-          <label>
-            <input type="radio" name="shirtSize" value="L" onChange={handleChange} /> L
-          </label>
-          <label>
-            <input type="radio" name="shirtSize" value="XL" onChange={handleChange} /> XL
-          </label>
-          <label>
-            <input type="radio" name="shirtSize" value="XXL" onChange={handleChange} /> XXL
-          </label>
-        </div>
-
-        <img
-          src="/size-chart.jpg"
-          alt="Size Chart"
-          className="size-chart"
-        />
-
+            <label>Select T-shirt Size:</label>
+            {['28', '30','32','34', '36', '38', '40', '42','44', '46', '48'].map(b => (
+              <label key={b}><input type="radio" name="shirtSize" value={b} checked={form.shirtSize === b} onChange={handleChange} /> {b}</label>
+            ))}
+          </div>
         <button type="submit">Register</button>
       </form>
     </div>
+    </>
   );
 };
 
