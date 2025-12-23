@@ -68,7 +68,7 @@ const TshirtRegistration = () => {
         
         <div className="sizes">
             <label>Select T-shirt Size:</label>
-            {['28', '30','32','34', '36', '38', '40', '42','44', '46', '48'].map(b => (
+            {['24','26','28', '30','32','34', '36', '38', '40', '42','44', '46', '48'].map(b => (
               <label key={b}><input type="radio" name="shirtSize" value={b} checked={form.shirtSize === b} onChange={handleChange} /> {b}</label>
             ))}
           </div>

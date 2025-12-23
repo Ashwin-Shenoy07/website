@@ -8,9 +8,10 @@ const tshirtRegistrationSchema = new mongoose.Schema(
     whatsapp: { type: String, required: true },
     shirtSize: {
       type: String,
-      enum: ['28', '30','32','34', '36', '38', '40', '42','44', '46', '48'],
+      enum: ['24','26','28', '30','32','34', '36', '38', '40', '42','44', '46', '48'],
       required: true
-    }
+    },
+    isActive: {type: Boolean, value: true}
   },
   { timestamps: true }
 );
